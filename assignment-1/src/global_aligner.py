@@ -3,6 +3,7 @@ from Bio import SeqIO, pairwise2
 from Bio.SubsMat import MatrixInfo
 import utils
 import random
+import pandas as pd
 
 aminoacid_names = "ARNDCEQGHILKMFPSTWYV"
 print("Number of aminoacids:", len(aminoacid_names))
@@ -69,30 +70,83 @@ def global_aligner(s1, s2, gap_penalty = -1, edit_function=sub_matrices_distance
                        
     for i in range(1, n_row):
         for j in range(1, n_col):
-            x_gap = edit_matrix[i - 1, j] + gap_penalty
-            y_gap = edit_matrix[i, j - 1] + gap_penalty
+            s1_gap = edit_matrix[i - 1, j] + gap_penalty
+            s2_gap = edit_matrix[i, j - 1] + gap_penalty
             mut = edit_matrix[i - 1, j - 1] + edit_function(s1[i - 1], s2[j - 1], matrix=matrix)
-            edit_matrix[i, j] = max(x_gap, y_gap, mut)
+            edit_matrix[i, j] = max(s1_gap, s2_gap, mut)
             
     return [edit_matrix[len(s1), len(s2)], edit_matrix]
     
 
+def backtrack_matrix(s1, s2, input_matrix, gap_penalty=-1, edit_function=sub_matrices_distance, matrix=MatrixInfo.pam120):
+    i = len(s1)
+    j = len(s2) 
+    aligned_s1 = ""
+    aligned_s2 = ""    
+    match_sequence = ""
+      
+    while(True):
+        val = input_matrix[i, j]
+        s1_gap = input_matrix[i - 1, j] + gap_penalty
+        s2_gap = input_matrix[i, j - 1] + gap_penalty
+        mut = input_matrix[i - 1, j - 1] + edit_function(s1[i - 1], s2[j - 1], matrix=matrix)
 
+        # Match s1 to a gap, move vertically
+        if val == s1_gap:
+            aligned_s1 = s1[i - 1] + aligned_s1
+            aligned_s2 = "-" + aligned_s2
+            match_sequence = " " + match_sequence
+            i -= 1
+        # Match s2 to a gap, move horizontally
+        elif val == s2_gap:
+            aligned_s1 = "-" + aligned_s1
+            aligned_s2 = s2[j - 1] + aligned_s2
+            match_sequence = " " + match_sequence
+            j -= 1
+        # Substitution, diagonal movement
+        elif val == mut:
+            aligned_s1 = s1[i - 1] + aligned_s1
+            aligned_s2 = s2[j - 1] + aligned_s2
+            match_sequence = (":" if s1[i - 1] == s2[j - 1] else ".") + match_sequence
+            i -= 1
+            j -= 1
+        else:
+            raise ValueError("val={0}, but we have s1_gap={1}, s2_gap={2}, mut={3}".format(val, s1_gap, s2_gap, mut))
+
+        if i == 0 and j == 0:
+            break   
+    return [aligned_s1, aligned_s2, match_sequence]
+                
                   
 # Load the sequences and test their edit distance
-#for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-#    for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-#        if i > j :
-#            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
-#            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
-#            print("MY ALIGNER:", global_aligner(seq_record_i.seq, seq_record_j.seq))
-#            print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.pam120, score_only = True))
-#            print("\n")
+for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+   for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+       if i > j :
+            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
+            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
+            [score, edit_matrix] = global_aligner(seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62)
+            print("MY ALIGNER:", score)          
+            [s1_al, s2_al, match_sequence] = backtrack_matrix(seq_record_i.seq, seq_record_j.seq, edit_matrix, gap_penalty=-1, matrix=MatrixInfo.blosum62)
+            print(s1_al)
+            print(match_sequence)
+            print(s2_al)
+            print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.blosum62, score_only = True))
+            print("\n")
+
+
 
 
 s1 = "THISLINE"
 s2 = "ISALIGNED"
 [score, edit_matrix] = global_aligner(s1, s2, gap_penalty=-4, matrix=MatrixInfo.blosum62)
+
 print(edit_matrix)
 print(score)
 
+edit_frame = pd.DataFrame(edit_matrix)
+edit_frame.index = list(" " + s1)
+edit_frame.columns = list(" " + s2)
+
+# [s1_al, s2_al, mat] = backtrack_matrix(s1, s2, edit_matrix, gap_penalty=-4, matrix=MatrixInfo.blosum62)
+# print(s1_al)
+# print(s2_al)
