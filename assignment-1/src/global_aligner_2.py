@@ -139,18 +139,22 @@ def backtrack_sequence_rec(s1, s2, backtrack_matrix):
     j = len(s2) 
 
     align = utils.Alignment()
-    for mov in backtrack_matrix.iloc[i, j][0]:
-        if mov == "V":
-            align = backtrack_sequence_rec(s1[:i-1], s2[:j], backtrack_matrix.iloc[:i, :j+1]) \
+    align_list = [align]
+    for mov in backtrack_matrix.iloc[i, j]:
+        if mov == "V":        
+            align_temp = backtrack_sequence_rec(s1[:i-1], s2[:j], backtrack_matrix.iloc[:i, :j+1]) \
                                            + utils.Alignment(s1[i-1], "-", " ") 
+            align_list = [align_temp + align for align in align_list]
             i -= 1
         elif mov == "H":
-            align = backtrack_sequence_rec(s1[:i], s2[:j-1], backtrack_matrix.iloc[:i+1, :j]) \
+            align_temp = backtrack_sequence_rec(s1[:i], s2[:j-1], backtrack_matrix.iloc[:i+1, :j]) \
                                            + utils.Alignment("-", s2[j-1], " ") 
+            align_list = [align_temp + align for align in align_list]
             j -= 1
         elif mov == "D":
-            align = backtrack_sequence_rec(s1[:i-1], s2[:j-1], backtrack_matrix.iloc[:i, :j]) \
+            align_temp = backtrack_sequence_rec(s1[:i-1], s2[:j-1], backtrack_matrix.iloc[:i, :j]) \
                                            + utils.Alignment(s1[i-1], s2[j-1],  (":" if s1[i-1] == s2[j-1] else "."))                                  
+            align_list = [align_temp + align for align in align_list]
             i -= 1
             j -= 1             
         elif mov == "X":
