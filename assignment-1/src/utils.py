@@ -21,7 +21,33 @@ def generate_string(size=10, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.SystemRandom().choice(chars) for _ in range(size))
 	
 
+def sub_matrices_distance(c1, c2, matrix=MatrixInfo.pam120):
+    """
+    Get the substitution score for c1 and c2 
+    according to the provided substitution matrix.
+
+    Parameters
+    ----------
+    c1, c2: char
+
+    matrix: Bio.SubsMat.MatrixInfo.available_matrix, optional
+        The substitution matrix to be used, among the ones available in Bio.SubsMat.MatrixInfo
+
+    Returns 
+    ----------
+    int  
+        the score for substituting c1 with c2.
+    """
+    return matrix[(c1, c2)] if (c1, c2) in matrix else matrix[(c2, c1)]
+
 class Alignment:
+    """
+    Class used to store an alignment of 2 sequences, stored as s1 and s2. 
+    It also contains a matching string, where for each aminoacid in s1 and s2, we have:\n
+        ":" Perfect match of aminoacids.\n
+        "." A substitution/mutation occured.\n
+        " " A gap was introduced.
+    """
 
     def __init__(self, s1="", s2="", match=""):
         self.s1 = s1
