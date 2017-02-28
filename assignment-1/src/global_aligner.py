@@ -5,6 +5,9 @@ import utils
 import random
 import pandas as pd
 
+import timeit
+import time 
+
 aminoacid_names = "ARNDCEQGHILKMFPSTWYV"
 print("Number of aminoacids:", len(aminoacid_names))
 
@@ -121,20 +124,24 @@ def backtrack_matrix(s1, s2, input_matrix, gap_penalty=-1, edit_function=sub_mat
                 
                   
 # Load the sequences and test their edit distance
+start_time = timeit.default_timer()
+
 for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
    for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
        if i > j :
-            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
-            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
+#            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
+#            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
             [score, edit_matrix] = global_aligner(seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62)
-            [s1_al, s2_al, match_sequence] = backtrack_matrix(seq_record_i.seq, seq_record_j.seq, edit_matrix, gap_penalty=-1, matrix=MatrixInfo.blosum62)
+            #[s1_al, s2_al, match_sequence] = backtrack_matrix(seq_record_i.seq, seq_record_j.seq, edit_matrix, gap_penalty=-1, matrix=MatrixInfo.blosum62)
             
-            print(s1_al)
-            print(match_sequence)
-            print(s2_al)
-            print("MY ALIGNER:", score)
-            print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.blosum62, score_only = True))
-            print("\n")
+#            print(s1_al)
+#            print(match_sequence)
+#            print(s2_al)
+#            print("MY ALIGNER:", score)
+#            print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.blosum62, score_only = True))
+#            print("\n")
+end_time = timeit.default_timer()
+print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
 
 
 

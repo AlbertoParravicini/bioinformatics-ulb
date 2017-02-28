@@ -2,19 +2,11 @@ import numpy as np
 from Bio import SeqIO, pairwise2
 from Bio.SubsMat import MatrixInfo
 import utils
-import random
 import pandas as pd
+from itertools import compress
 
-import numpy as np
-
-
-aminoacid_names = "ARNDCEQGHILKMFPSTWYV"
-print("Number of aminoacids:", len(aminoacid_names))
-
-gap_penalty = -1
-
-min_string_size = 20
-max_string_size = 70
+import timeit
+import time 
 
 
 def sub_matrices_distance(c1, c2, matrix=MatrixInfo.pam120):
@@ -64,7 +56,13 @@ def global_aligner_2(s1, s2, gap_penalty = -1, edit_function=sub_matrices_distan
     Returns 
     ----------
     int
-        The edit distance between s1 and s2
+        The alignment score of s1 and s2
+    
+    float64 np.matrix
+        The alignment matrix of s1 and s2
+        
+    pandas.DataFrame
+        The backtrack matrix, which shows the optimal matching "movements" for each cell.
     """
     n_row= len(s1) + 1
     n_col = len(s2) + 1
@@ -78,6 +76,7 @@ def global_aligner_2(s1, s2, gap_penalty = -1, edit_function=sub_matrices_distan
     for j in range(n_col):
         edit_matrix[0, j] = j * (0 if semiglobal else gap_penalty)
         backtrack_matrix.set_value(0, j, "H")
+        
     # Set the first cell of the backtrack matrix to "X", as an end-marker.
     backtrack_matrix.set_value(0, 0, "X")
                        
@@ -89,91 +88,54 @@ def global_aligner_2(s1, s2, gap_penalty = -1, edit_function=sub_matrices_distan
             edit_matrix[i, j] = max(s1_gap, s2_gap, mut)
 
             # Check which movements are the best, return it as a list where 1 = max of the list.
-            m_list = [s1_gap, s2_gap, mut]
-            mov = np.array(["V", "H", "D"])
             
             # Write in the matrix the movement that lead to that cell, as a string.
             # e.g. "HV" means that horizontal and vertical movements were the best. 
-            backtrack_matrix.set_value(i, j, "".join(mov[np.argwhere(m_list == np.max(m_list)).flatten()]))
+            backtrack_matrix.set_value(i, j, "".join(check_argmax(s1_gap, s2_gap, mut)))
             
     return [edit_matrix[len(s1), len(s2)], edit_matrix, backtrack_matrix]
     
 
-def backtrack_sequence(s1, s2, backtrack_matrix):
-    i = len(s1)
-    j = len(s2) 
-    aligned_s1 = ""
-    aligned_s2 = ""    
-    match_sequence = ""
+def check_argmax(s1_gap, s2_gap, mut):
+    array = [s1_gap, s2_gap, mut]
+    res = [1 if i == max(array) else 0 for i in array] 
+    return list(compress(["V", "H", "D"], res))
 
-    over = False
-    
-    while not over:
-        for mov in backtrack_matrix.iloc[i, j][0]:
-            if mov == "V":
-                aligned_s1 = s1[i - 1] + aligned_s1
-                aligned_s2 = "-" + aligned_s2
-                match_sequence = " " + match_sequence
-                i -= 1
-            elif mov == "H":
-                aligned_s1 = "-" + aligned_s1
-                aligned_s2 = s2[j - 1] + aligned_s2
-                match_sequence = " " + match_sequence
-                j -= 1
-            elif mov == "D":
-                aligned_s1 = s1[i - 1] + aligned_s1
-                aligned_s2 = s2[j - 1] + aligned_s2
-                match_sequence = (":" if s1[i - 1] == s2[j - 1] else ".") + match_sequence
-                i -= 1
-                j -= 1       
-            elif mov == "X":
-                over = True
-            else:
-                 raise ValueError("val={0} isn't a valid movement!".format(mov))
 
-    return [aligned_s1, aligned_s2, match_sequence]
-                
-     
 def backtrack_sequence_rec(s1, s2, backtrack_matrix, k=1):
     i = len(s1)
     j = len(s2) 
 
     align_list = []
 
-    for mov in backtrack_matrix.iloc[i, j]:
-        if len(align_list) < k:
-            try: 
-                if mov == "V":        
-                    align_temp = backtrack_sequence_rec(s1[:i-1], s2[:j], backtrack_matrix.iloc[:i, :j+1], k=k)
-                     
-                    for align_i in align_temp:
+    try: 
+        for mov in backtrack_matrix.iloc[i, j]:
+            if len(align_list) < k:
+                if mov == "V":                               
+                    for align_i in backtrack_sequence_rec(s1[:i-1], s2[:j], backtrack_matrix.iloc[:i, :j+1], k=k):
                         if len(align_list) < k:
                             align_list.append(align_i + utils.Alignment(s1[i-1], "-", " "))         
-                        else:
-                            break                            
-                elif mov == "H":
-                    align_temp = backtrack_sequence_rec(s1[:i], s2[:j-1], backtrack_matrix.iloc[:i+1, :j], k=k) 
-        
-                    for align_i in align_temp:
+                        else: break   
+                                                  
+                elif mov == "H":    
+                    for align_i in backtrack_sequence_rec(s1[:i], s2[:j-1], backtrack_matrix.iloc[:i+1, :j], k=k) :
                         if len(align_list) < k:
                             align_list.append(align_i + utils.Alignment("-", s2[j-1], " ")) 
-                        else:
-                            break
-                elif mov == "D":
-                    align_temp = backtrack_sequence_rec(s1[:i-1], s2[:j-1], backtrack_matrix.iloc[:i, :j], k=k) 
-                     
-                    for align_i in align_temp:
+                        else: break
+                    
+                elif mov == "D":                     
+                    for align_i in backtrack_sequence_rec(s1[:i-1], s2[:j-1], backtrack_matrix.iloc[:i, :j], k=k) :
                         if len(align_list) < k:
                             align_list.append(align_i + utils.Alignment(s1[i-1], s2[j-1],  (":" if s1[i-1] == s2[j-1] else ".")))    
-                        else:
-                            break
+                        else: break
+                    
                 elif mov == "X":
                     return [utils.Alignment("", "", "")]
-                else:
-                    raise ValueError("val={0} isn't a valid movement!".format(mov))
-            except IndexError:
-                print("i:", i, " -- j:", j, " -- mov:", mov)
-                raise 
+                
+                else: raise ValueError("val={0} isn't a valid movement!".format(mov))
+    except IndexError:
+        print("i:", i, " -- j:", j)
+        raise 
     
     return align_list     
      
@@ -185,8 +147,9 @@ def backtrack_sequence_rec(s1, s2, backtrack_matrix, k=1):
 ##########################################
 
 
-
+gap_penalty = -1
              
+start_time = timeit.default_timer()
 # Load the sequences and test their edit distance
 for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
    for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
@@ -202,8 +165,8 @@ for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta
             print("MY ALIGNER:", score)
             print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.blosum62, score_only = True))
             print("\n")
-
-
+end_time = timeit.default_timer()
+print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
 
 
 s1 = "THISLINE"
