@@ -29,7 +29,9 @@ class Alignment:
         self.match = match
     
     def __add__(self, other):
-        return Alignment(s1 = self.s1 + other.s1, s2 = self.s2 + other.s2, match = self.match + other.match)
+        if isinstance(other, self.__class__):
+            return Alignment(s1 = self.s1 + other.s1, s2 = self.s2 + other.s2, match = self.match + other.match)
+        return NotImplemented
 
     def __iadd__(self, other):
         if isinstance(other, self.__class__):
@@ -40,9 +42,9 @@ class Alignment:
              return NotImplemented
 
     def __str__(self):
-        if isinstance(other, self.__class__):
-            return str(self.s1 + "\n" + self.match + "\n" + self.s2)
-        return NotImplemented
+        return str(self.s1 + "\n" + self.match + "\n" + self.s2)
 
+    def __repr__(self):
+        return str(self)
     
 	

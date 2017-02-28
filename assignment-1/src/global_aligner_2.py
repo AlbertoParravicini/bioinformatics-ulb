@@ -134,35 +134,48 @@ def backtrack_sequence(s1, s2, backtrack_matrix):
     return [aligned_s1, aligned_s2, match_sequence]
                 
      
-def backtrack_sequence_rec(s1, s2, backtrack_matrix):
+def backtrack_sequence_rec(s1, s2, backtrack_matrix, k=1):
     i = len(s1)
     j = len(s2) 
 
-    align = utils.Alignment()
-    align_list = [align]
-    for mov in backtrack_matrix.iloc[i, j]:
-        if mov == "V":        
-            align_temp = backtrack_sequence_rec(s1[:i-1], s2[:j], backtrack_matrix.iloc[:i, :j+1]) \
-                                           + utils.Alignment(s1[i-1], "-", " ") 
-            align_list = [align_temp + align for align in align_list]
-            i -= 1
-        elif mov == "H":
-            align_temp = backtrack_sequence_rec(s1[:i], s2[:j-1], backtrack_matrix.iloc[:i+1, :j]) \
-                                           + utils.Alignment("-", s2[j-1], " ") 
-            align_list = [align_temp + align for align in align_list]
-            j -= 1
-        elif mov == "D":
-            align_temp = backtrack_sequence_rec(s1[:i-1], s2[:j-1], backtrack_matrix.iloc[:i, :j]) \
-                                           + utils.Alignment(s1[i-1], s2[j-1],  (":" if s1[i-1] == s2[j-1] else "."))                                  
-            align_list = [align_temp + align for align in align_list]
-            i -= 1
-            j -= 1             
-        elif mov == "X":
-            return align
-        else:
-            raise ValueError("val={0} isn't a valid movement!".format(mov))
+    align_list = []
 
-    return align       
+    for mov in backtrack_matrix.iloc[i, j]:
+        if len(align_list) < k:
+            try: 
+                if mov == "V":        
+                    align_temp = backtrack_sequence_rec(s1[:i-1], s2[:j], backtrack_matrix.iloc[:i, :j+1], k=k)
+                     
+                    for align_i in align_temp:
+                        if len(align_list) < k:
+                            align_list.append(align_i + utils.Alignment(s1[i-1], "-", " "))         
+                        else:
+                            break                            
+                elif mov == "H":
+                    align_temp = backtrack_sequence_rec(s1[:i], s2[:j-1], backtrack_matrix.iloc[:i+1, :j], k=k) 
+        
+                    for align_i in align_temp:
+                        if len(align_list) < k:
+                            align_list.append(align_i + utils.Alignment("-", s2[j-1], " ")) 
+                        else:
+                            break
+                elif mov == "D":
+                    align_temp = backtrack_sequence_rec(s1[:i-1], s2[:j-1], backtrack_matrix.iloc[:i, :j], k=k) 
+                     
+                    for align_i in align_temp:
+                        if len(align_list) < k:
+                            align_list.append(align_i + utils.Alignment(s1[i-1], s2[j-1],  (":" if s1[i-1] == s2[j-1] else ".")))    
+                        else:
+                            break
+                elif mov == "X":
+                    return [utils.Alignment("", "", "")]
+                else:
+                    raise ValueError("val={0} isn't a valid movement!".format(mov))
+            except IndexError:
+                print("i:", i, " -- j:", j, " -- mov:", mov)
+                raise 
+    
+    return align_list     
      
 
 
@@ -175,29 +188,27 @@ def backtrack_sequence_rec(s1, s2, backtrack_matrix):
 
              
 # Load the sequences and test their edit distance
-#for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-#   for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-#       if i > j :
-#            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
-#            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
-#            [score, edit_matrix, backtrack_matrix] = global_aligner_2(seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62)
-#            align = backtrack_sequence_rec(seq_record_i.seq, seq_record_j.seq, backtrack_matrix)
-#            s1_al = align.s1
-#            s2_al = align.s2
-#            mat = align.match
-#            print(s1_al)
-#            print(mat)
-#            print(s2_al)
-#            print("MY ALIGNER:", score)
-#            print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.blosum62, score_only = True))
-#            print("\n")
+for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+   for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+       if i > j :
+            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
+            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
+            [score, edit_matrix, backtrack_matrix] = global_aligner_2(seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62)
+            align_list = backtrack_sequence_rec(seq_record_i.seq, seq_record_j.seq, backtrack_matrix, k=1)
+
+            for p in align_list:
+                print(str(p) + "\n\n")
+            print("DONE")
+            print("MY ALIGNER:", score)
+            print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.blosum62, score_only = True))
+            print("\n")
 
 
 
 
 s1 = "THISLINE"
 s2 = "ISALIGNED"
-[score, edit_matrix, backtrack_matrix] = global_aligner_2(s1, s2, gap_penalty=-4, matrix=MatrixInfo.blosum62, semiglobal=True)
+[score, edit_matrix, backtrack_matrix] = global_aligner_2(s1, s2, gap_penalty=-4, matrix=MatrixInfo.blosum62, semiglobal=False)
 
 print(edit_matrix)
 print(backtrack_matrix)
@@ -206,11 +217,8 @@ edit_frame = pd.DataFrame(edit_matrix)
 edit_frame.index = list(" " + s1)
 edit_frame.columns = list(" " + s2)
 
-align = backtrack_sequence_rec(s1, s2, backtrack_matrix)
-s1_al = align.s1
-s2_al = align.s2
-mat = align.match
-print(s1_al)
-print(mat)
-print(s2_al)
+align_list = backtrack_sequence_rec(s1, s2, backtrack_matrix)
 
+for p in align_list:
+    print(str(p) + "\n\n")
+print("DONE")
