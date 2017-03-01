@@ -1,5 +1,7 @@
 import string
 import random
+from Bio.SubsMat import MatrixInfo
+
 
 def generate_string(size=10, chars=string.ascii_uppercase + string.digits):
     """
