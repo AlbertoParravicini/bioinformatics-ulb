@@ -194,98 +194,100 @@ def semiglobal_backtrack(s1, s2, score_matrix, backtrack_matrix, k=1):
     return align_list
 
 
-#def global_aligner_affine_penalty_2(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, edit_function=utils.sub_matrices_distance, matrix=MatrixInfo.pam120, semiglobal=False):
-#    """
-#    Compute the global alignment between 2 aminoacid sequences "s1" and "s2".
-#
-#    Parameters 
-#    ----------
-#    s1, s2: string
-#        The two input aminoacid sequences on which the edit distance is computed.
-#
-#    gap_penalty: int, optional
-#        The penalty factor assigned for matching an aminoacid to a gap character.
-#        It should be a NEGATIVE integer.
-#        
-#    gap_opening_penalty: int, optional
-#        The penalty factor assigned for starting a gap sequence.
-#        It should be a NEGATIVE integer.    
-#
-#    edit_function: function, optional
-#        The function that is used to compute the cost of an aminoacid subtitution.
-#
-#    matrix: Bio.SubsMat.MatrixInfo.available_matrix, optional
-#        The substitution matrix to be used, among the ones available in Bio.SubsMat.MatrixInfo.
-#        It is used by edit_function, if needed.
-#
-#    semiglobal: bool
-#        Set to false to penalize the sequences for not being aligned at the start.
-#        If true, don't penalize gaps at the beginning of the alignment.
-#
-#    Returns 
-#    ----------
-#    int
-#        The alignment score of s1 and s2
-#
-#    float64 np.matrix
-#        The alignment matrix of s1 and s2
-#
-#    pandas.DataFrame
-#        The backtrack matrix, which shows the optimal matching "movements" for each cell.
-#    """
-#    
-#    n_row = len(s1) + 1
-#    n_col = len(s2) + 1
-#    # Creates a matrix where the partial scores are stored.
-#    S = np.zeros((n_row, n_col))
-#    # Additional matrices used to handle the affine gap penalty.
-#    V = np.zeros((n_row, n_col))
-#    W = np.zeros((n_row, n_col))
-#    # Creates a matrix (stored as DataFrame) where the optimal movements are
-#    # stored.
-#    backtrack_matrix = pd.DataFrame("", index=np.arange(n_row), columns=np.arange(n_col))
-#
-#    gap_opening_penalty += gap_penalty
-#    # Initialize the first column and row of the matrices.
-#    S[0, 0] = 0
-#    V[0, 0] = 0
-#    W[0, 0] = 0
-#    for i in range(1, n_row):
-#        V[i, 0] = 0 if semiglobal else max(S[i-1, 0] + gap_opening_penalty, V[i-1, 0] + gap_penalty)
-#        W[i, 0] = -np.Infinity
-#        S[i, 0] = i * (0 if semiglobal else gap_penalty)
-#        backtrack_matrix.set_value(i, 0, "V")
-#
-#    for j in range(1, n_col):
-#        V[0, j] = -np.Infinity
-#        W[0, j] = 0 if semiglobal else max(S[0, j-1] + gap_opening_penalty, W[0, j-1] + gap_penalty)
-#        S[0, j] = j * (0 if semiglobal else gap_penalty)
-#        backtrack_matrix.set_value(0, j, "H")
-#    
-#    # Set the first cell of the backtrack matrix to "X", as an end-marker.
-#    backtrack_matrix.set_value(0, 0, "X")
-#    
-#
-#    for i in range(1, n_row):
-#        for j in range(1, n_col):
-#            # Compute the possible movements, and then keeps the best.
-#            V[i, j] = max(S[i-1, j] + gap_opening_penalty, V[i-1, j] + gap_penalty)
-#            W[i, j] = max(S[i, j-1] + gap_opening_penalty, W[i, j-1] + gap_penalty)
-#            mut_cost = edit_function(s1[i-1], s2[j-1], matrix=matrix)
-#            S[i, j] = max(V[i, j], W[i, j], S[i-1, j-1] + mut_cost)
-#
-#            # Write in the matrix the movement that lead to that cell, as a string.
-#            # e.g. "HV" means that horizontal and vertical movements were the
-#            # best.
-#            backtrack_matrix.set_value(i, j, "".join(check_argmax([V[i, j], W[i, j], mut_cost])))
-#    
-#    # If semiglobal alignment, get the best value on the last row.
-#    align_score = max(S[len(s1), :]) if semiglobal else S[len(s1), len(s2)]
-#    return [align_score, S, backtrack_matrix]
+def global_aligner_affine_penalty_2(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, edit_function=utils.sub_matrices_distance, matrix=MatrixInfo.pam120, semiglobal=False):
+    """
+    Compute the global alignment between 2 aminoacid sequences "s1" and "s2".
+
+    Parameters 
+    ----------
+    s1, s2: string
+        The two input aminoacid sequences on which the edit distance is computed.
+
+    gap_penalty: int, optional
+        The penalty factor assigned for matching an aminoacid to a gap character.
+        It should be a NEGATIVE integer.
+        
+    gap_opening_penalty: int, optional
+        The penalty factor assigned for starting a gap sequence.
+        It should be a NEGATIVE integer.    
+
+    edit_function: function, optional
+        The function that is used to compute the cost of an aminoacid subtitution.
+
+    matrix: Bio.SubsMat.MatrixInfo.available_matrix, optional
+        The substitution matrix to be used, among the ones available in Bio.SubsMat.MatrixInfo.
+        It is used by edit_function, if needed.
+
+    semiglobal: bool
+        Set to false to penalize the sequences for not being aligned at the start.
+        If true, don't penalize gaps at the beginning of the alignment.
+
+    Returns 
+    ----------
+    int
+        The alignment score of s1 and s2
+
+    float64 np.matrix
+        The alignment matrix of s1 and s2
+
+    pandas.DataFrame
+        The backtrack matrix, which shows the optimal matching "movements" for each cell.
+    """
+    
+    n_row = len(s1) + 1
+    n_col = len(s2) + 1
+    # Creates a matrix where the partial scores are stored.
+    S = np.zeros((n_row, n_col))
+    # Additional matrices used to handle the affine gap penalty.
+    V = np.zeros((n_row, n_col))
+    W = np.zeros((n_row, n_col))
+    # Creates a matrix (stored as DataFrame) where the optimal movements are
+    # stored.
+    backtrack_matrix = pd.DataFrame("", index=np.arange(n_row), columns=np.arange(n_col))
+
+    gap_opening_penalty += gap_penalty
+    # Initialize the first column and row of the matrices.
+    S[0, 0] = 0
+    V[0, 0] = 0
+    W[0, 0] = 0
+    for i in range(1, n_row):
+        V[i, 0] = 0 if semiglobal else max(S[i-1, 0] + gap_opening_penalty, V[i-1, 0] + gap_penalty)
+        W[i, 0] = 0 if semiglobal else max(S[i-1, 0] + gap_opening_penalty, W[i-1, 0] + gap_penalty)
+        S[i, 0] = i * (0 if semiglobal else gap_penalty)
+        backtrack_matrix.set_value(i, 0, "V")
+
+    for j in range(1, n_col):
+        V[0, j] = 0 if semiglobal else max(S[0, j-1] + gap_opening_penalty, V[0, j-1] + gap_penalty)
+        W[0, j] = 0 if semiglobal else max(S[0, j-1] + gap_opening_penalty, W[0, j-1] + gap_penalty)
+        S[0, j] = j * (0 if semiglobal else gap_penalty)
+        backtrack_matrix.set_value(0, j, "H")
+    
+    # Set the first cell of the backtrack matrix to "X", as an end-marker.
+    backtrack_matrix.set_value(0, 0, "X")
+    
+    S[1:, 0] += gap_opening_penalty - gap_penalty
+    S[0, 1:] += gap_opening_penalty - gap_penalty
+
+    for i in range(1, n_row):
+        for j in range(1, n_col):
+            # Compute the possible movements, and then keeps the best.
+            V[i, j] = max(S[i-1, j] + gap_opening_penalty, V[i-1, j] + gap_penalty)
+            W[i, j] = max(S[i, j-1] + gap_opening_penalty, W[i, j-1] + gap_penalty)
+            mut_cost = edit_function(s1[i-1], s2[j-1], matrix=matrix)
+            S[i, j] = max(V[i, j], W[i, j], S[i-1, j-1] + mut_cost)
+
+            # Write in the matrix the movement that lead to that cell, as a string.
+            # e.g. "HV" means that horizontal and vertical movements were the
+            # best.
+            backtrack_matrix.set_value(i, j, "".join(check_argmax([V[i, j], W[i, j], S[i-1, j-1] + mut_cost])))
+    
+    # If semiglobal alignment, get the best value on the last row.
+    align_score = max(S[len(s1), :]) if semiglobal else S[len(s1), len(s2)]
+    return [align_score, S, backtrack_matrix]
 
 
 def global_aligner_affine_penalty(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, edit_function=utils.sub_matrices_distance, matrix=MatrixInfo.pam120, semiglobal=False):
-        """
+    """
     Compute the global alignment between 2 aminoacid sequences "s1" and "s2".
 
     Parameters 
@@ -323,7 +325,6 @@ def global_aligner_affine_penalty(s1, s2, gap_penalty=-1, gap_opening_penalty=-1
     pandas.DataFrame
         The backtrack matrix, which shows the optimal matching "movements" for each cell.
     """
-    
     def gap_function(gap_penalty, gap_opening_penalty, k):
         return gap_opening_penalty + (k * gap_penalty)
 
@@ -395,27 +396,27 @@ end_time = timeit.default_timer()
 print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
 
 
-s1 = "THISLINE"
-s2 = "ISALIGNED"
-[score, edit_matrix, backtrack_matrix] = global_aligner_2(s1, s2, gap_penalty=-8, matrix=MatrixInfo.blosum62, semiglobal=True)
-# print(edit_matrix)
-print(backtrack_matrix)
+s1 = "SGAKSMWTEHKSPDGRTYYYNTETKQSTWEKPDD"
+s2 = "EKLPPGWEKRMSRSSGRVYYFNHITNASQWERPSG"
+#[score, edit_matrix, backtrack_matrix] = global_aligner_2(s1, s2, gap_penalty=-8, matrix=MatrixInfo.blosum62, semiglobal=True)
+## print(edit_matrix)
+#print(backtrack_matrix)
+#
+#edit_frame = pd.DataFrame(edit_matrix)
+#edit_frame.index = list(" " + s1)
+#edit_frame.columns = list(" " + s2)
+#
+#align_list = semiglobal_backtrack(s1, s2, edit_matrix, backtrack_matrix)
+#
+#for p in align_list:
+#    print(str(p) + "\n")
+#print("DONE")
 
-edit_frame = pd.DataFrame(edit_matrix)
-edit_frame.index = list(" " + s1)
-edit_frame.columns = list(" " + s2)
+print("AFFINE 1")
+[score_2, edit_matrix_2, backtrack_matrix_2] = global_aligner_affine_penalty(s1, s2, gap_penalty=-2, gap_opening_penalty=-3, matrix=MatrixInfo.blosum62, semiglobal=False)
 
-align_list = semiglobal_backtrack(s1, s2, edit_matrix, backtrack_matrix)
-
-for p in align_list:
-    print(str(p) + "\n")
-print("DONE")
-
-
-[score_2, edit_matrix_2, backtrack_matrix_2] = global_aligner_affine_penalty(s1, s2, gap_penalty=-2, gap_opening_penalty=-3, matrix=MatrixInfo.blosum62, semiglobal=True)
-
-# print(edit_matrix)                            
-print(backtrack_matrix_2)
+print(edit_matrix_2)                            
+#print(backtrack_matrix_2)
 
 edit_frame_2 = pd.DataFrame(edit_matrix_2)
 edit_frame_2.index = list(" " + s1)
@@ -424,5 +425,21 @@ edit_frame_2.columns = list(" " + s2)
 align_list_2 = semiglobal_backtrack(s1, s2, edit_matrix_2, backtrack_matrix_2)
 
 for p in align_list_2:
+    print(str(p) + "\n")
+print("DONE")
+
+print("AFFINE 2")
+[score_3, edit_matrix_3, backtrack_matrix_3] = global_aligner_affine_penalty_2(s1, s2, gap_penalty=-2, gap_opening_penalty=-3, matrix=MatrixInfo.blosum62, semiglobal=False)
+
+print(edit_matrix_3)                            
+#print(backtrack_matrix_3)
+
+edit_frame_3 = pd.DataFrame(edit_matrix_3)
+edit_frame_3.index = list(" " + s1)
+edit_frame_3.columns = list(" " + s2)
+
+align_list_3 = semiglobal_backtrack(s1, s2, edit_matrix_3, backtrack_matrix_3)
+
+for p in align_list_3:
     print(str(p) + "\n")
 print("DONE")
