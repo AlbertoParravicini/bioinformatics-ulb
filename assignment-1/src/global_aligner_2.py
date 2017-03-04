@@ -264,9 +264,9 @@ def global_aligner_affine_penalty_2(s1, s2, gap_penalty=-1, gap_opening_penalty=
     
     # Set the first cell of the backtrack matrix to "X", as an end-marker.
     backtrack_matrix.set_value(0, 0, "X")
-    
-    S[1:, 0] += gap_opening_penalty - gap_penalty
-    S[0, 1:] += gap_opening_penalty - gap_penalty
+    # Fix the values of S so that the gap opening penalty is considered.
+    S[1:, 0] += 0 if semiglobal else (gap_opening_penalty - gap_penalty)
+    S[0, 1:] += 0 if semiglobal else (gap_opening_penalty - gap_penalty)
 
     for i in range(1, n_row):
         for j in range(1, n_col):

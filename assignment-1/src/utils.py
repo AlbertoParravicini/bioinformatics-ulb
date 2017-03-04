@@ -23,6 +23,7 @@ def generate_string(size=10, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.SystemRandom().choice(chars) for _ in range(size))
 	
 
+
 def sub_matrices_distance(c1, c2, matrix=MatrixInfo.pam120):
     """
     Get the substitution score for c1 and c2 
