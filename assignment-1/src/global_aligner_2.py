@@ -325,9 +325,6 @@ def global_aligner_affine_penalty(s1, s2, gap_penalty=-1, gap_opening_penalty=-1
     pandas.DataFrame
         The backtrack matrix, which shows the optimal matching "movements" for each cell.
     """
-    def gap_function(gap_penalty, gap_opening_penalty, k):
-        return gap_opening_penalty + (k * gap_penalty)
-
     n_row = len(s1) + 1
     n_col = len(s2) + 1
     # Creates a matrix where the partial scores are stored.
@@ -338,11 +335,11 @@ def global_aligner_affine_penalty(s1, s2, gap_penalty=-1, gap_opening_penalty=-1
 
     # Initialize the first column and row of the matrices.
     for i in range(n_row):
-        S[i, 0] = 0 if semiglobal else gap_function(gap_penalty, gap_opening_penalty, i)
+        S[i, 0] = 0 if semiglobal else utils.gap_function(gap_penalty, gap_opening_penalty, i)
         backtrack_matrix.set_value(i, 0, "V")
 
     for j in range(n_col):
-        S[0, j] = 0 if semiglobal else gap_function(gap_penalty, gap_opening_penalty, j)
+        S[0, j] = 0 if semiglobal else utils.gap_function(gap_penalty, gap_opening_penalty, j)
         backtrack_matrix.set_value(0, j, "H")
 
     # Manually initialize the first cell
@@ -353,8 +350,8 @@ def global_aligner_affine_penalty(s1, s2, gap_penalty=-1, gap_opening_penalty=-1
     for i in range(1, n_row):
         for j in range(1, n_col):
             # Compute the possible movements, and then keeps the best.
-            s1_gap = max([S[i - k, j] + gap_function(gap_penalty, gap_opening_penalty, k) for k in range(1, i+1)])
-            s2_gap = max([S[i, j - k] + gap_function(gap_penalty, gap_opening_penalty, k) for k in range(1, j+1)])
+            s1_gap = max([S[i - k, j] + utils.gap_function(gap_penalty, gap_opening_penalty, k) for k in range(1, i+1)])
+            s2_gap = max([S[i, j - k] + utils.gap_function(gap_penalty, gap_opening_penalty, k) for k in range(1, j+1)])
             mut = S[i - 1, j - 1] + edit_function(s1[i - 1], s2[j - 1], matrix=matrix)
             S[i, j] = max(s1_gap, s2_gap, mut)
 
@@ -372,32 +369,32 @@ def global_aligner_affine_penalty(s1, s2, gap_penalty=-1, gap_opening_penalty=-1
 ##########################################
 
 
-gap_penalty = -1
-
-start_time = timeit.default_timer()
-# Load the sequences and test their edit distance
-for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-    for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-        if i > j:
-            #            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
-            #            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
-            [score, edit_matrix, backtrack_matrix] = global_aligner_2(
-                seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62)
-            align_list = backtrack_sequence_rec(
-                seq_record_i.seq, seq_record_j.seq, backtrack_matrix, k=1)
-
-#            for p in align_list:
-#                print(str(p) + "\n\n")
-#            print("DONE")
-#            print("MY ALIGNER:", score)
-#            print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.blosum62, score_only = True))
-#            print("\n")
-end_time = timeit.default_timer()
-print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
-
-
-s1 = "SGAKSMWTEHKSPDGRTYYYNTETKQSTWEKPDD"
-s2 = "EKLPPGWEKRMSRSSGRVYYFNHITNASQWERPSG"
+#gap_penalty = -1
+#
+#start_time = timeit.default_timer()
+## Load the sequences and test their edit distance
+#for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+#    for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+#        if i > j:
+#            #            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
+#            #            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
+#            [score, edit_matrix, backtrack_matrix] = global_aligner_2(
+#                seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62)
+#            align_list = backtrack_sequence_rec(
+#                seq_record_i.seq, seq_record_j.seq, backtrack_matrix, k=1)
+#
+##            for p in align_list:
+##                print(str(p) + "\n\n")
+##            print("DONE")
+##            print("MY ALIGNER:", score)
+##            print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.blosum62, score_only = True))
+##            print("\n")
+#end_time = timeit.default_timer()
+#print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
+#
+#
+#s1 = "THISLINE"
+#s2 = "ISALIGNED"
 #[score, edit_matrix, backtrack_matrix] = global_aligner_2(s1, s2, gap_penalty=-8, matrix=MatrixInfo.blosum62, semiglobal=True)
 ## print(edit_matrix)
 #print(backtrack_matrix)
@@ -412,34 +409,34 @@ s2 = "EKLPPGWEKRMSRSSGRVYYFNHITNASQWERPSG"
 #    print(str(p) + "\n")
 #print("DONE")
 
-print("AFFINE 1")
-[score_2, edit_matrix_2, backtrack_matrix_2] = global_aligner_affine_penalty(s1, s2, gap_penalty=-2, gap_opening_penalty=-3, matrix=MatrixInfo.blosum62, semiglobal=False)
-
-print(edit_matrix_2)                            
-#print(backtrack_matrix_2)
-
-edit_frame_2 = pd.DataFrame(edit_matrix_2)
-edit_frame_2.index = list(" " + s1)
-edit_frame_2.columns = list(" " + s2)
-
-align_list_2 = semiglobal_backtrack(s1, s2, edit_matrix_2, backtrack_matrix_2)
-
-for p in align_list_2:
-    print(str(p) + "\n")
-print("DONE")
-
-print("AFFINE 2")
-[score_3, edit_matrix_3, backtrack_matrix_3] = global_aligner_affine_penalty_2(s1, s2, gap_penalty=-2, gap_opening_penalty=-3, matrix=MatrixInfo.blosum62, semiglobal=False)
-
-print(edit_matrix_3)                            
-#print(backtrack_matrix_3)
-
-edit_frame_3 = pd.DataFrame(edit_matrix_3)
-edit_frame_3.index = list(" " + s1)
-edit_frame_3.columns = list(" " + s2)
-
-align_list_3 = semiglobal_backtrack(s1, s2, edit_matrix_3, backtrack_matrix_3)
-
-for p in align_list_3:
-    print(str(p) + "\n")
-print("DONE")
+#print("AFFINE 1")
+#[score_2, edit_matrix_2, backtrack_matrix_2] = global_aligner_affine_penalty(s1, s2, gap_penalty=-2, gap_opening_penalty=-3, matrix=MatrixInfo.blosum62, semiglobal=False)
+#
+#print(edit_matrix_2)                            
+##print(backtrack_matrix_2)
+#
+#edit_frame_2 = pd.DataFrame(edit_matrix_2)
+#edit_frame_2.index = list(" " + s1)
+#edit_frame_2.columns = list(" " + s2)
+#
+#align_list_2 = semiglobal_backtrack(s1, s2, edit_matrix_2, backtrack_matrix_2)
+#
+#for p in align_list_2:
+#    print(str(p) + "\n")
+#print("DONE")
+#
+#print("AFFINE 2")
+#[score_3, edit_matrix_3, backtrack_matrix_3] = global_aligner_affine_penalty_2(s1, s2, gap_penalty=-2, gap_opening_penalty=-3, matrix=MatrixInfo.blosum62, semiglobal=False)
+#
+#print(edit_matrix_3)                            
+##print(backtrack_matrix_3)
+#
+#edit_frame_3 = pd.DataFrame(edit_matrix_3)
+#edit_frame_3.index = list(" " + s1)
+#edit_frame_3.columns = list(" " + s2)
+#
+#align_list_3 = semiglobal_backtrack(s1, s2, edit_matrix_3, backtrack_matrix_3)
+#
+#for p in align_list_3:
+#    print(str(p) + "\n")
+#print("DONE")

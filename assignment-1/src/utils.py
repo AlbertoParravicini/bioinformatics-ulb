@@ -42,6 +42,24 @@ def sub_matrices_distance(c1, c2, matrix=MatrixInfo.pam120):
         the score for substituting c1 with c2.
     """
     return matrix[(c1, c2)] if (c1, c2) in matrix else matrix[(c2, c1)]
+	
+def gap_function(gap_penalty, gap_opening_penalty, k):
+	"""
+	Compute the cost of a gap given the input parameters.
+	
+	Parameters
+    ----------
+	gap_penalty: int
+		Cost for extending a gap.
+		
+	gap_opening_penalty: int
+		Additional cost for opening a gap.
+		
+	k: int
+		Lenght of the current gap
+	"""
+	return gap_opening_penalty + (k * gap_penalty)
+    
 
 class Alignment:
     """
@@ -50,12 +68,14 @@ class Alignment:
         ":" Perfect match of aminoacids.\n
         "." A substitution/mutation occured.\n
         " " A gap was introduced.
+    It is possible to add the score of the alignment, if available.
     """
 
-    def __init__(self, s1="", s2="", match=""):
+    def __init__(self, s1="", s2="", match="", score=0):
         self.s1 = s1
         self.s2 = s2
         self.match = match
+        self.score = 0
     
     def __add__(self, other):
         if isinstance(other, self.__class__):
@@ -71,7 +91,7 @@ class Alignment:
              return NotImplemented
 
     def __str__(self):
-        return str(self.s1 + "\n" + self.match + "\n" + self.s2)
+        return self.s1 + "\n" + self.match + "\n" + self.s2 + "\n\n----- SCORE:" + str(self.score)
 
     def __repr__(self):
         return str(self)
