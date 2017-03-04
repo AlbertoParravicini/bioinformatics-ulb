@@ -87,7 +87,7 @@ def local_aligner_score(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, edit_fu
 # BACKTRACK ##############################
 ##########################################
 
-def reconstruct_sequence(S, backtrack_matrix, gap_penalty, gap_opening_penalty, edit_function, matrix):
+def reconstruct_sequence(s1, s2, S, backtrack_matrix, gap_penalty, gap_opening_penalty, edit_function, matrix):
 
     coordinate_list = []
     
@@ -175,7 +175,6 @@ def local_aligner(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, k=1, sub_alig
     # Build the initial score matrix.
     [score, S, backtrack_matrix, i_max, j_max] = local_aligner_score(s1, s2, gap_penalty=gap_penalty, gap_opening_penalty=gap_opening_penalty, edit_function=edit_function, matrix=matrix)
     for n in range(sub_alignments_num):
-        print(S)
         align_list_n = global_aligner_2.backtrack_sequence_rec(s1[:i_max], s2[:j_max], backtrack_matrix.iloc[:i_max+1, :j_max+1], k=k)
         
         # Add the alignment scores to each alignment
@@ -189,7 +188,7 @@ def local_aligner(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, k=1, sub_alig
         if sub_alignments_num > 1:
             # Update the score matrix to get more subalignments.
             # Get the coordinates of one best matching
-            coordinate_list = reconstruct_sequence(S, backtrack_matrix.iloc[:i_max+1, :j_max+1], gap_penalty, gap_opening_penalty, edit_function, matrix)
+            coordinate_list = reconstruct_sequence(s1, s2, S, backtrack_matrix.iloc[:i_max+1, :j_max+1], gap_penalty, gap_opening_penalty, edit_function, matrix)
             update_score_matrix(s1, s2, S, coordinate_list, backtrack_matrix, gap_penalty, gap_opening_penalty, edit_function, matrix)
 
             # Find the new maximum value in the matrix.
@@ -207,23 +206,24 @@ def local_aligner(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, k=1, sub_alig
 ##########################################
 
 
-#start_time = timeit.default_timer()
-## Load the sequences and test their edit distance
-#for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-#    for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-#        if i > j:
-#            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
-#            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
+start_time = timeit.default_timer()
+# Load the sequences and test their edit distance
+for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+    for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+        if i > j:
+            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
+            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
 #            [score, edit_matrix, backtrack_matrix, i_max, j_max] = local_aligner_score(seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62)
-##            align_list = backtrack_sequence_rec(seq_record_i.seq, seq_record_j.seq, backtrack_matrix, k=1)
-#
-##            for p in align_list:
-##               print(str(p) + "\n\n")
-#            print("DONE")
+            align_list = local_aligner(seq_record_i.seq,  seq_record_j.seq, -4, 0, 4, 7, matrix=MatrixInfo.blosum62)
+#            align_list = backtrack_sequence_rec(seq_record_i.seq, seq_record_j.seq, backtrack_matrix, k=1)
+
+#            for p in align_list:
+#               print(str(p) + "\n\n")
+            print("DONE")
 #            print("MY ALIGNER:", score)
-#            print("\n")
-#end_time = timeit.default_timer()
-#print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
+            print("\n")
+end_time = timeit.default_timer()
+print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
 
 
 s1 = "THISLINE"
