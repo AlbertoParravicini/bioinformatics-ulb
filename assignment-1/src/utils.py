@@ -2,6 +2,30 @@ import string
 import random
 from Bio.SubsMat import MatrixInfo
 
+aminoacid_list = "ARNDCEQGHILKMFPSTWYV"
+
+aminoacid_prob = {
+   "A": 0.0826,
+   "Q": 0.0393,
+   "L": 0.0965,
+   "S": 0.0660,
+   "R": 0.0553,
+   "E": 0.0674,
+   "K": 0.0582,
+   "T": 0.0535,
+   "N": 0.0406,
+   "G": 0.0708,
+   "M": 0.0241,
+   "W": 0.0109,
+   "D": 0.0546,
+   "H": 0.0227,
+   "F": 0.0386,
+   "Y": 0.0292,
+   "C": 0.0137,
+   "I": 0.0593,
+   "P": 0.0472,
+   "V": 0.0686
+}
 
 def generate_string(size=10, chars=string.ascii_uppercase + string.digits):
     """
@@ -10,7 +34,7 @@ def generate_string(size=10, chars=string.ascii_uppercase + string.digits):
     
     Parameters
     ----------
-    k: int
+    size: int
         Size of the string to be generated
     
     chars: array-like
@@ -44,7 +68,7 @@ def sub_matrices_distance(c1, c2, matrix=MatrixInfo.pam120):
     return matrix[(c1, c2)] if (c1, c2) in matrix else matrix[(c2, c1)]
 	
 def gap_function(gap_penalty, gap_opening_penalty, k):
-	"""
+    """
 	Compute the cost of a gap given the input parameters.
 	
 	Parameters
@@ -58,7 +82,7 @@ def gap_function(gap_penalty, gap_opening_penalty, k):
 	k: int
 		Lenght of the current gap
 	"""
-	return gap_opening_penalty + (k * gap_penalty)
+    return gap_opening_penalty + (k * gap_penalty)
     
 
 class Alignment:
@@ -96,4 +120,3 @@ class Alignment:
     def __repr__(self):
         return str(self)
     
-	

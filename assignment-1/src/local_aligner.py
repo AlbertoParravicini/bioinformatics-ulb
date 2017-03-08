@@ -9,6 +9,9 @@ import global_aligner_2
 import timeit
 
 
+##########################################
+# CHECK ARGMAX ###########################
+##########################################
 
 def check_argmax(array):
     """
@@ -30,11 +33,10 @@ def check_argmax(array):
     return list(compress(["V", "H", "D", "X"], res))
 
 
-
-
 ##########################################
 # LOCAL ALIGNER SCORE ####################
 ##########################################
+
 
 def local_aligner_score(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, edit_function=utils.sub_matrices_distance, matrix=MatrixInfo.pam120):
     n_row = len(s1) + 1
@@ -81,16 +83,14 @@ def local_aligner_score(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, edit_fu
     return [score_max, S, backtrack_matrix, i_max, j_max]
 
 
-
-
 ##########################################
 # BACKTRACK ##############################
 ##########################################
 
+
 def reconstruct_sequence(s1, s2, S, backtrack_matrix, gap_penalty, gap_opening_penalty, edit_function, matrix):
 
     coordinate_list = []
-    
     [i, j] = backtrack_matrix.shape
     i-=1
     j-=1
@@ -122,6 +122,10 @@ def reconstruct_sequence(s1, s2, S, backtrack_matrix, gap_penalty, gap_opening_p
     
     coordinate_list.reverse()    
     return coordinate_list
+
+##########################################
+# UPDATE SCORE MATRIX ####################
+##########################################
 
 def update_score_matrix(s1, s2, S, coordinate_list, backtrack_matrix, gap_penalty, gap_opening_penalty, edit_function, matrix):
     
@@ -165,9 +169,11 @@ def update_score_matrix(s1, s2, S, coordinate_list, backtrack_matrix, gap_penalt
             if backtrack_matrix.iloc[i, j] != "X":
                 S[i, j] = max(s1_gap, s2_gap, mut, 0)
 
+
 ##########################################
 # LOCAL ALIGNER ##########################
 ##########################################
+
 
 def local_aligner(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, k=1, sub_alignments_num=1, edit_function=utils.sub_matrices_distance, matrix=MatrixInfo.pam120):
     alignments = []
@@ -200,55 +206,54 @@ def local_aligner(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, k=1, sub_alig
     return alignments
     
 
-    
 ##########################################
 # TEST ###################################
 ##########################################
 
-
-start_time = timeit.default_timer()
-# Load the sequences and test their edit distance
-for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-    for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-        if i > j:
-            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
-            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
-#            [score, edit_matrix, backtrack_matrix, i_max, j_max] = local_aligner_score(seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62)
-            align_list = local_aligner(seq_record_i.seq,  seq_record_j.seq, -4, 0, 4, 7, matrix=MatrixInfo.blosum62)
-#            align_list = backtrack_sequence_rec(seq_record_i.seq, seq_record_j.seq, backtrack_matrix, k=1)
-
-#            for p in align_list:
-#               print(str(p) + "\n\n")
-            print("DONE")
-#            print("MY ALIGNER:", score)
-            print("\n")
-end_time = timeit.default_timer()
-print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
-
-
-s1 = "THISLINE"
-s2 = "ISALIGNED"
-#[score, edit_matrix, backtrack_matrix, i_max, j_max] = local_aligner_score(s1, s2, gap_penalty=-4, gap_opening_penalty=0, matrix=MatrixInfo.blosum62)
-#print(edit_matrix)
-#print(backtrack_matrix)
 #
-#edit_frame = pd.DataFrame(edit_matrix)
-#edit_frame.index = list(" " + s1)
-#edit_frame.columns = list(" " + s2)
+# start_time = timeit.default_timer()
+# # Load the sequences and test their edit distance
+# for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+#     for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+#         if i > j:
+#             print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
+#             print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
+# #            [score, edit_matrix, backtrack_matrix, i_max, j_max] = local_aligner_score(seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62)
+#             align_list = local_aligner(seq_record_i.seq,  seq_record_j.seq, -4, 0, 4, 7, matrix=MatrixInfo.blosum62)
+# #            align_list = backtrack_sequence_rec(seq_record_i.seq, seq_record_j.seq, backtrack_matrix, k=1)
 #
-#print("\nSCORE:", score)
+# #            for p in align_list:
+# #               print(str(p) + "\n\n")
+#             print("DONE")
+# #            print("MY ALIGNER:", score)
+#             print("\n")
+# end_time = timeit.default_timer()
+# print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
 #
-#align_list = global_aligner_2.backtrack_sequence_rec(s1[:i_max], s2[:j_max], backtrack_matrix.iloc[:i_max+1, :j_max+1], k=3)
 #
-#for p in align_list:
-#    print(str(p) + "\n")
-#print("DONE")
+# s1 = "THISLINE"
+# s2 = "ISALIGNED"
+# [score, edit_matrix, backtrack_matrix, i_max, j_max] = local_aligner_score(s1, s2, gap_penalty=-4, gap_opening_penalty=0, matrix=MatrixInfo.blosum62)
+# print(edit_matrix)
+# print(backtrack_matrix)
+#
+# edit_frame = pd.DataFrame(edit_matrix)
+# edit_frame.index = list(" " + s1)
+# edit_frame.columns = list(" " + s2)
+#
+# print("\nSCORE:", score)
+#
+# align_list = global_aligner_2.backtrack_sequence_rec(s1[:i_max], s2[:j_max], backtrack_matrix.iloc[:i_max+1, :j_max+1], k=3)
+#
+# for p in align_list:
+#     print(str(p) + "\n")
+# print("DONE")
 
 
 
-align_list = local_aligner(s1, s2, -4, 0, 4, 7, matrix=MatrixInfo.blosum62)
-for align_i in align_list:
-    print(align_i)
-
-
+# align_list = local_aligner(s1, s2, -4, 0, 4, 7, matrix=MatrixInfo.blosum62)
+# for align_i in align_list:
+#     print(align_i)
+#
+#
 
