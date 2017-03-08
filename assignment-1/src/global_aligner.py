@@ -64,6 +64,9 @@ def global_aligner(s1, s2, gap_penalty = -1, edit_function=sub_matrices_distance
     ----------
     int
         The edit distance between s1 and s2
+
+    float64 np.matrix
+        The alignment matrix of s1 and s2
     """
     n_row= len(s1) + 1
     n_col = len(s2) + 1
@@ -82,7 +85,9 @@ def global_aligner(s1, s2, gap_penalty = -1, edit_function=sub_matrices_distance
             mut = edit_matrix[i - 1, j - 1] + edit_function(s1[i - 1], s2[j - 1], matrix=matrix)
             edit_matrix[i, j] = max(s1_gap, s2_gap, mut)
             
-    return [edit_matrix[len(s1), len(s2)], edit_matrix]
+    # If semiglobal alignment, get the best value on the last row.
+    align_score = max(edit_matrix[len(s1), :]) if semiglobal else edit_matrix[len(s1), len(s2)]
+    return [align_score, edit_matrix]
     
 
 def backtrack_matrix(s1, s2, input_matrix, gap_penalty=-1, edit_function=sub_matrices_distance, matrix=MatrixInfo.pam120, semiglobal=False):

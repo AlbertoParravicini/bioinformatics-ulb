@@ -18,23 +18,45 @@
       <file leaf-file-name="global_aligner_2.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/global_aligner_2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="124" column="0" lean-forward="true" selection-start-line="124" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
+            <state relative-caret-position="581">
+              <caret line="461" column="33" lean-forward="true" selection-start-line="461" selection-start-column="33" selection-end-line="461" selection-end-column="33" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-                <element signature="e#3864#4471#1" expanded="false" />
-                <element signature="e#6527#7189#1" expanded="false" />
-                <element signature="e#7861#9157#1" expanded="false" />
-                <element signature="e#11883#13178#1" expanded="false" />
+                <element signature="e#3972#4579#1" expanded="false" />
+                <element signature="e#6635#7297#1" expanded="false" />
+                <element signature="e#7969#9265#1" expanded="false" />
+                <element signature="e#11991#13286#1" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="local_aligner.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pairwise2.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/Bio/pairwise2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4649">
+              <caret line="234" column="65" lean-forward="true" selection-start-line="234" selection-start-column="65" selection-end-line="234" selection-end-column="65" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="global_aligner.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/global_aligner.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4003">
+              <caret line="146" column="24" lean-forward="true" selection-start-line="146" selection-start-column="24" selection-end-line="146" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="local_aligner.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/local_aligner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="627">
+            <state relative-caret-position="9240">
               <caret line="231" column="0" lean-forward="false" selection-start-line="213" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -46,8 +68,8 @@
       <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="109" column="45" lean-forward="true" selection-start-line="109" selection-start-column="45" selection-end-line="109" selection-end-column="45" />
+            <state relative-caret-position="289">
+              <caret line="114" column="45" lean-forward="true" selection-start-line="114" selection-start-column="45" selection-end-line="114" selection-end-column="45" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -67,11 +89,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Assignment 1.ipynb" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Assignment 1.ipynb">
-          <provider selected="true" editor-type-id="ipnb-editor">
-            <state>
-              <selected id="0" />
+      <file leaf-file-name="edit_distance.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/edit_distance.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2960">
+              <caret line="74" column="0" lean-forward="true" selection-start-line="74" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -94,11 +119,13 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/global_aligner_2.py" />
-        <option value="$PROJECT_DIR$/src/utils.py" />
         <option value="$PROJECT_DIR$/src/local_aligner.py" />
         <option value="$PROJECT_DIR$/src/pssm.py" />
         <option value="$PROJECT_DIR$/Assignment 1.ipynb" />
+        <option value="$PROJECT_DIR$/src/edit_distance.py" />
+        <option value="$PROJECT_DIR$/src/global_aligner.py" />
+        <option value="$PROJECT_DIR$/src/global_aligner_2.py" />
+        <option value="$PROJECT_DIR$/src/utils.py" />
       </list>
     </option>
   </component>
@@ -159,6 +186,10 @@
               <option name="myItemId" value="assignment-1" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -167,10 +198,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="assignment-1" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -197,7 +224,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Python" />
   </component>
-  <component name="RunManager" selected="Python.pssm">
+  <component name="RunManager" selected="Python.global_aligner_2">
     <configuration default="false" name="local_aligner" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -228,6 +255,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="assignment-1" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/pssm.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="global_aligner_2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="assignment-1" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/global_aligner_2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -379,14 +423,16 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <list size="2">
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Python.local_aligner" />
       <item index="1" class="java.lang.String" itemvalue="Python.pssm" />
+      <item index="2" class="java.lang.String" itemvalue="Python.global_aligner_2" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Python.pssm" />
-        <item index="1" class="java.lang.String" itemvalue="Python.local_aligner" />
+      <list size="3">
+        <item index="0" class="java.lang.String" itemvalue="Python.global_aligner_2" />
+        <item index="1" class="java.lang.String" itemvalue="Python.pssm" />
+        <item index="2" class="java.lang.String" itemvalue="Python.local_aligner" />
       </list>
     </recent_temporary>
   </component>
@@ -440,8 +486,13 @@
           <line>272</line>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/global_aligner_2.py</url>
+          <line>457</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="30" />
+      <option name="time" value="32" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -456,10 +507,10 @@
           <caret line="126" column="0" lean-forward="false" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#3864#4471#1" expanded="false" />
-            <element signature="e#6527#7189#1" expanded="false" />
-            <element signature="e#7861#9157#1" expanded="false" />
-            <element signature="e#11883#13178#1" expanded="false" />
+            <element signature="e#3972#4579#1" expanded="false" />
+            <element signature="e#6635#7297#1" expanded="false" />
+            <element signature="e#7969#9265#1" expanded="false" />
+            <element signature="e#11991#13286#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -500,10 +551,10 @@
           <caret line="126" column="0" lean-forward="false" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#3864#4471#1" expanded="false" />
-            <element signature="e#6527#7189#1" expanded="false" />
-            <element signature="e#7861#9157#1" expanded="false" />
-            <element signature="e#11883#13178#1" expanded="false" />
+            <element signature="e#3972#4579#1" expanded="false" />
+            <element signature="e#6635#7297#1" expanded="false" />
+            <element signature="e#7969#9265#1" expanded="false" />
+            <element signature="e#11991#13286#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -544,10 +595,10 @@
           <caret line="346" column="22" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="442" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#3864#4471#1" expanded="false" />
-            <element signature="e#6527#7189#1" expanded="false" />
-            <element signature="e#7861#9157#1" expanded="false" />
-            <element signature="e#11883#13178#1" expanded="false" />
+            <element signature="e#3972#4579#1" expanded="false" />
+            <element signature="e#6635#7297#1" expanded="false" />
+            <element signature="e#7969#9265#1" expanded="false" />
+            <element signature="e#11991#13286#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -578,10 +629,10 @@
           <caret line="346" column="22" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="442" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#3864#4471#1" expanded="false" />
-            <element signature="e#6527#7189#1" expanded="false" />
-            <element signature="e#7861#9157#1" expanded="false" />
-            <element signature="e#11883#13178#1" expanded="false" />
+            <element signature="e#3972#4579#1" expanded="false" />
+            <element signature="e#6635#7297#1" expanded="false" />
+            <element signature="e#7969#9265#1" expanded="false" />
+            <element signature="e#11991#13286#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -602,10 +653,10 @@
           <caret line="346" column="22" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="442" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#3864#4471#1" expanded="false" />
-            <element signature="e#6527#7189#1" expanded="false" />
-            <element signature="e#7861#9157#1" expanded="false" />
-            <element signature="e#11883#13178#1" expanded="false" />
+            <element signature="e#3972#4579#1" expanded="false" />
+            <element signature="e#6635#7297#1" expanded="false" />
+            <element signature="e#7969#9265#1" expanded="false" />
+            <element signature="e#11991#13286#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -626,10 +677,10 @@
           <caret line="346" column="22" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="442" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#3864#4471#1" expanded="false" />
-            <element signature="e#6527#7189#1" expanded="false" />
-            <element signature="e#7861#9157#1" expanded="false" />
-            <element signature="e#11883#13178#1" expanded="false" />
+            <element signature="e#3972#4579#1" expanded="false" />
+            <element signature="e#6635#7297#1" expanded="false" />
+            <element signature="e#7969#9265#1" expanded="false" />
+            <element signature="e#11991#13286#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -650,10 +701,10 @@
           <caret line="346" column="22" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="442" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#3864#4471#1" expanded="false" />
-            <element signature="e#6527#7189#1" expanded="false" />
-            <element signature="e#7861#9157#1" expanded="false" />
-            <element signature="e#11883#13178#1" expanded="false" />
+            <element signature="e#3972#4579#1" expanded="false" />
+            <element signature="e#6635#7297#1" expanded="false" />
+            <element signature="e#7969#9265#1" expanded="false" />
+            <element signature="e#11991#13286#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -665,13 +716,6 @@
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/edit_distance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -689,36 +733,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/global_aligner_2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="124" column="0" lean-forward="true" selection-start-line="124" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#3864#4471#1" expanded="false" />
-            <element signature="e#6527#7189#1" expanded="false" />
-            <element signature="e#7861#9157#1" expanded="false" />
-            <element signature="e#11883#13178#1" expanded="false" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/Assignment 1.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/local_aligner.py">
+    <entry file="file://$PROJECT_DIR$/src/edit_distance.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="627">
-          <caret line="231" column="0" lean-forward="false" selection-start-line="213" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
+        <state relative-caret-position="2960">
+          <caret line="74" column="0" lean-forward="true" selection-start-line="74" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="109" column="45" lean-forward="true" selection-start-line="109" selection-start-column="45" selection-end-line="109" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -733,10 +760,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assignment 1.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="-1" />
+    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/Bio/pairwise2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4649">
+          <caret line="234" column="65" lean-forward="true" selection-start-line="234" selection-start-column="65" selection-end-line="234" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/global_aligner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4003">
+          <caret line="146" column="24" lean-forward="true" selection-start-line="146" selection-start-column="24" selection-end-line="146" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="114" column="45" lean-forward="true" selection-start-line="114" selection-start-column="45" selection-end-line="114" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/global_aligner_2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="581">
+          <caret line="461" column="33" lean-forward="true" selection-start-line="461" selection-start-column="33" selection-end-line="461" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#3972#4579#1" expanded="false" />
+            <element signature="e#6635#7297#1" expanded="false" />
+            <element signature="e#7969#9265#1" expanded="false" />
+            <element signature="e#11991#13286#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/local_aligner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9240">
+          <caret line="231" column="0" lean-forward="false" selection-start-line="213" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

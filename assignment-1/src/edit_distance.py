@@ -73,11 +73,10 @@ def edit_distance(s1, s2, gap_penalty = -1, edit_function = edit_levenshtein):
     
 
 
-# Perform a quick tets to see if the edit distance is ok!        
+# Perform a quick test to see if the edit distance is ok!
 n_test = 100
 for _ in range(n_test):
     s1 = utils.generate_string(random.randint(min_string_size, max_string_size), aminoacid_names)
     s2 = utils.generate_string(random.randint(min_string_size, max_string_size), aminoacid_names)
     assert edit_distance(s1, s2) == editdistance.eval(s1, s2), "Edit distance is wrong!"
                   
-            

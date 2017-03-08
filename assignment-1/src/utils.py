@@ -81,6 +81,11 @@ def gap_function(gap_penalty, gap_opening_penalty, k):
 		
 	k: int
 		Lenght of the current gap
+
+	Returns
+    ----------
+    int
+        the gap penalty value.
 	"""
     return gap_opening_penalty + (k * gap_penalty)
     
@@ -96,8 +101,8 @@ class Alignment:
     """
 
     def __init__(self, s1="", s2="", match="", score=0):
-        self.s1 = s1
-        self.s2 = s2
+        self.s1 = str(s1)
+        self.s2 = str(s2)
         self.match = match
         self.score = 0
     

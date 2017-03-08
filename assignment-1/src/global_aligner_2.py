@@ -7,7 +7,9 @@ from itertools import compress
 
 import timeit
 
-def global_aligner_2(s1, s2, gap_penalty=-1, edit_function=utils.sub_matrices_distance, matrix=MatrixInfo.pam120, semiglobal=False):
+def global_aligner_2(s1: object, s2: object, gap_penalty: object = -1, edit_function: object = utils.sub_matrices_distance,
+                     matrix: object = MatrixInfo.pam120,
+                     semiglobal: object = False) -> object:
     """
     Compute the global alignment between 2 aminoacid sequences "s1" and "s2".
 
@@ -387,7 +389,7 @@ def global_aligner_affine_penalty(s1, s2, gap_penalty=-1, gap_opening_penalty=-1
 ##                print(str(p) + "\n\n")
 ##            print("DONE")
 ##            print("MY ALIGNER:", score)
-##            print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.blosum62, score_only = True))
+#             print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.blosum62, score_only = True))
 ##            print("\n")
 #end_time = timeit.default_timer()
 #print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
@@ -440,3 +442,22 @@ def global_aligner_affine_penalty(s1, s2, gap_penalty=-1, gap_opening_penalty=-1
 #for p in align_list_3:
 #    print(str(p) + "\n")
 #print("DONE")
+
+# Load the sequences and test their edit distance
+start_time = timeit.default_timer()
+
+for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+   for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+       if i > j :
+            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
+            print("\t", seq_record_j.id, "-- length:", len(seq_record_j), "\n")
+            [score, edit_matrix, backtrack_matrix] = global_aligner_2(seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62, semiglobal=True)
+            alignments = semiglobal_backtrack(seq_record_i.seq, seq_record_j.seq, score_matrix=edit_matrix, backtrack_matrix=backtrack_matrix, k = 3)
+
+            print("\nMY ALIGNER:")
+            for align_i in alignments:
+                align_i.score = score
+                print(align_i)
+            print("--------------------------------------\n")
+end_time = timeit.default_timer()
+print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
