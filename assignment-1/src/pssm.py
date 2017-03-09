@@ -6,7 +6,7 @@ import pandas as pd
 from itertools import compress
 
 import local_aligner
-import global_aligner_2
+import global_aligner_2 as gb2
 import timeit
 
 filename = "../data/msa-results-omega.fasta"
@@ -16,6 +16,45 @@ filename = "../data/msa-results-omega.fasta"
 ##########################################
 
 def build_pssm(records_filename, records_format="fasta", alpha=None, beta=None, gap_penalty_coeff=-6, gap_penalty_vector=None):
+    """
+    Build the Position specific scoring matrix for a given set of aligned sequences.
+
+    Parameters
+    ----------
+	records_filename: str
+		The name of the file that contains the sequences to be loaded.
+
+	records_format: str, optional
+		Format in which the sequences are stored (for instance "fasta").
+		For the full list, refer to the documentation of BioPython.SeqIO.
+
+	alpha: float, optional
+		Parameter used to build the PSSM.
+		By default, it is N_seq - 1
+
+	beta: float, optional
+		Parameter used to build the PSSM.
+		By default, it is sqrt(N_seq)
+
+    gap_penalty_coeff: float, optional
+        Maximum value that will be assigned as gap penalty, if no gap_penalty_vector is provided.
+        The gap penalties will be inversely proportional to the frequencies of gaps in the aligned sequences.
+
+    gap_penalty_vector: array, optional
+        Array with length equal to each aligned sequences, it contains the gap penalities to apply to each position.
+
+	Returns
+    ----------
+    pssm: pandas.DataFrame
+        The PSSM of the record set.
+
+    frequency_matrix: pandas.DataFrame
+        The frequency matrix of the record set.
+
+    consensus: str
+        The consensus of the given record set.
+        For each position, it gives the most frequent aminoacid.
+    """
     records = list(SeqIO.parse(records_filename, records_format))
 
     # Parameters
@@ -64,7 +103,7 @@ def build_pssm(records_filename, records_format="fasta", alpha=None, beta=None, 
 
 
 ##########################################
-# PSSM ALIGNER ###########################
+# FIND CONSENSUS #########################
 ##########################################
 
 def find_consensus(frequency_matrix):
@@ -77,6 +116,33 @@ def find_consensus(frequency_matrix):
 ##########################################
 
 def pssm_aligner(seq, pssm, k=1, sub_alignments_num=1, consensus=None):
+    """
+    Align a given sequence to a given pssm, with a local aligner.
+
+    Parameters
+    ----------
+    seq: string
+        The input aminoacid sequences to be aligned.
+
+    pssm: pandas.DataFrame
+        The PSSM against which the input sequence is aligned.
+
+    k: int, optional
+        The number of best alignment to return, in case there are more alignments with the same optimal score.
+
+    sub_alignments_num: int, optional
+        The number of novel subalignments to be produced.
+
+    consensus: str, optional
+        The consensus sequence of the PSSM.
+        If available, the input sequence will be visually aligned to it,
+        to provide a better understanding of the alignment
+
+    Returns
+    ----------
+    array of Alignment
+        A list of k alignments, of class utils.Alignment
+    """
     alignments = []
 
     # Build the initial score matrix.
@@ -85,7 +151,7 @@ def pssm_aligner(seq, pssm, k=1, sub_alignments_num=1, consensus=None):
         # If the consensus isn't given, the string is visually aligned to the column numbers.
         # In short, only the alignment of the given sequence, and the score will be of any use.
         seq2 = [str(i) for i in pssm.columns.values][1:] if consensus is None else consensus
-        align_list_n = global_aligner_2.backtrack_sequence_rec(seq[:i_max], seq2[:j_max], backtrack_matrix.iloc[:i_max + 1, :j_max + 1], k=k)
+        align_list_n = gb2.backtrack_sequence_rec(seq[:i_max], seq2[:j_max], backtrack_matrix.iloc[:i_max + 1, :j_max + 1], k=k)
 
         # Add the alignment scores to each alignment
         for align_i in align_list_n:
@@ -221,8 +287,6 @@ def update_score_matrix(seq, pssm, S, coordinate_list, backtrack_matrix):
         if j > 0 and i > 0:
             # Update the values below the current position.
             for i_i in range(i+1, len(seq)+1):
-                # Store the old value of the cell, as if it doesn't change we can stop to update S.
-                old_val = S[i_i, j]
 
                 seq_gap = 0 if i_i == 0 else S[i_i-1, j] + pssm.loc["-", j-1]
                 pssm_gap = 0 if j == 0 else S[i_i, j-1] + (0 if j == 1 else pssm.loc["-", j-2])
@@ -230,12 +294,8 @@ def update_score_matrix(seq, pssm, S, coordinate_list, backtrack_matrix):
                 # In the local aligner, don't accept negative scores!
                 if backtrack_matrix.iloc[i_i, j] != "X":
                     S[i_i, j] = max(seq_gap, pssm_gap, mut, 0)
-                if S[i_i, j] == old_val:
-                    break
             # Update the values on the right the current position.
             for j_j in range(j+1, len(pssm.columns)+1):
-                # Store the old value of the cell, as if it doesn't change we can stop to update S.
-                old_val = S[i, j_j]
 
                 seq_gap = 0 if i == 0 else S[i-1, j_j] + pssm.loc["-", j_j-1]
                 pssm_gap = 0 if j_j == 0 else S[i, j_j-1] + (0 if j_j == 1 else pssm.loc["-", j_j-2])
@@ -243,8 +303,6 @@ def update_score_matrix(seq, pssm, S, coordinate_list, backtrack_matrix):
                 # In the local aligner, don't accept negative scores!
                 if backtrack_matrix.iloc[i, j_j] != "X":
                     S[i, j_j] = max(seq_gap, pssm_gap, mut, 0)
-                if S[i, j_j] == old_val:
-                    break
 
     for i in range(coordinate_list[-1][0]+1, len(seq)+1):
         for j in range(coordinate_list[-1][1]+1, len(pssm.columns)+1):

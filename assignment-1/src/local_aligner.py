@@ -355,8 +355,8 @@ def local_aligner(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, k=1, sub_alig
 #     print(align_i)
 #
 #
-s1 = "MDPGQQPPPQPAPQGQGQPPSQPPQGQGPPSGPGQPAPAATQAAPQAPPAGHQIVHVRGD"
-s2 = "MADEEKLPPGWEKRMSRSSGRVYYFNHITNASQWERPSGNSSSGGKNGQGEPARVRCSHL"
-alignments = local_aligner(s1, s2, gap_penalty=-1, gap_opening_penalty=0, matrix=MatrixInfo.blosum62, sub_alignments_num=3)
-for align_i in alignments:
-    print(align_i)
+# s1 = "MDPGQQPPPQPAPQGQGQPPSQPPQGQGPPSGPGQPAPAATQAAPQAPPAGHQIVHVRGD"
+# s2 = "MADEEKLPPGWEKRMSRSSGRVYYFNHITNASQWERPSGNSSSGGKNGQGEPARVRCSHL"
+# alignments = local_aligner(s1, s2, gap_penalty=-1, gap_opening_penalty=0, matrix=MatrixInfo.blosum62, sub_alignments_num=3)
+# for align_i in alignments:
+#     print(align_i)
