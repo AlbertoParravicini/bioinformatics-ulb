@@ -5,7 +5,7 @@ import utils
 import pandas as pd
 from itertools import compress
 
-import global_aligner_2
+import global_aligner_2 as gb2
 import timeit
 
 
@@ -20,12 +20,12 @@ def check_argmax(array):
     Parameters
     ----------
     array: array-like
-        numerical array of size 3, it contains the scores relative to character insertion/deletion/subtitution
+        numerical array of size 4, it contains the scores relative to character insertion/deletion/subtitution
 
     Returns
     ----------
     string
-        A string of 1 to 3 chars from "V, H, D": a character appears in the return string
+        A string of 1 to 4 chars from "V, H, D, X": a character appears in the return string
         if it is an optimal movement, with maximum score.
     """
     # Check which movements are the best, return it as a list where 1 = max of the list.
@@ -39,6 +39,41 @@ def check_argmax(array):
 
 
 def local_aligner_score(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, edit_function=utils.sub_matrices_distance, matrix=MatrixInfo.pam120):
+    """
+    Compute the local alignment score between 2 aminoacid sequences "s1" and "s2".
+
+    Parameters
+    ----------
+    s1, s2: string
+        The two input aminoacid sequences on which the edit distance is computed.
+
+    gap_penalty: int, optional
+        The penalty factor assigned for matching an aminoacid to a gap character.
+        It should be a NEGATIVE integer.
+
+    gap_opening_penalty: int, optional
+        The penalty factor assigned for starting a gap sequence.
+        It should be a NEGATIVE integer.
+
+    edit_function: function, optional
+        The function that is used to compute the cost of an aminoacid subtitution.
+
+    matrix: Bio.SubsMat.MatrixInfo.available_matrix, optional
+        The substitution matrix to be used, among the ones available in Bio.SubsMat.MatrixInfo.
+        It is used by edit_function, if needed.
+
+    Returns
+    ----------
+    int
+        The alignment score of s1 and s2
+
+    float64 np.matrix
+        The alignment matrix of s1 and s2
+
+    pandas.DataFrame
+        The backtrack matrix, which shows the optimal matching "movements" for each cell.
+    """
+
     n_row = len(s1) + 1
     n_col = len(s2) + 1
     # Creates a matrix where the partial scores are stored.
@@ -89,7 +124,41 @@ def local_aligner_score(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, edit_fu
 
 
 def reconstruct_sequence(s1, s2, S, backtrack_matrix, gap_penalty, gap_opening_penalty, edit_function, matrix):
+    """
+    Finds the coordinates of an optimal alignment sequence.
 
+    Parameters
+    ----------
+    s1, s2: string
+        The two input aminoacid sequences on which the edit distance is computed.
+
+    S: float64 np.matrix
+        The alignment matrix of s1 and s2
+
+    backtrack_matrix: pandas.DataFrame
+        Matrix containing the best movements, produced by the global aligner applied to s1 and s2.
+
+    gap_penalty: int, optional
+        The penalty factor assigned for matching an aminoacid to a gap character.
+        It should be a NEGATIVE integer.
+
+    gap_opening_penalty: int, optional
+        The penalty factor assigned for starting a gap sequence.
+        It should be a NEGATIVE integer.
+
+    edit_function: function, optional
+        The function that is used to compute the cost of an aminoacid subtitution.
+
+    matrix: Bio.SubsMat.MatrixInfo.available_matrix, optional
+        The substitution matrix to be used, among the ones available in Bio.SubsMat.MatrixInfo.
+        It is used by edit_function, if needed.
+
+    Returns
+    ----------
+    array [int, int]
+        an array in which each element is a pair of integers, and corresponds to a position of the optimal alignment
+        in the matrix.
+    """
     coordinate_list = []
     [i, j] = backtrack_matrix.shape
     i-=1
@@ -137,8 +206,6 @@ def update_score_matrix(s1, s2, S, coordinate_list, backtrack_matrix, gap_penalt
         if j > 0 and i > 0:
             # Update the values below the current position.
             for i_i in range(i+1, len(s1)+1):
-                # Store the old value of the cell, as if it doesn't change we can stop to update S.
-                old_val = S[i_i, j]
                 
                 s1_gap = max([S[i_i - k, j] + utils.gap_function(gap_penalty, gap_opening_penalty, k) for k in range(1, i_i+1)])
                 s2_gap = max([S[i_i, j - k] + utils.gap_function(gap_penalty, gap_opening_penalty, k) for k in range(1, j+1)])
@@ -146,12 +213,9 @@ def update_score_matrix(s1, s2, S, coordinate_list, backtrack_matrix, gap_penalt
                 # In the local aligner, don't accept negative scores!
                 if backtrack_matrix.iloc[i_i, j] != "X":
                     S[i_i, j] = max(s1_gap, s2_gap, mut, 0)
-                if S[i_i, j] == old_val:
-                    break
+
             # Update the values on the right the current position.
             for j_j in range(j+1, len(s2)+1):
-                # Store the old value of the cell, as if it doesn't change we can stop to update S.
-                old_val = S[i, j_j]
                 
                 s1_gap = max([S[i - k, j_j] + utils.gap_function(gap_penalty, gap_opening_penalty, k) for k in range(1, i+1)])
                 s2_gap = max([S[i, j_j - k] + utils.gap_function(gap_penalty, gap_opening_penalty, k) for k in range(1, j_j+1)])
@@ -159,8 +223,8 @@ def update_score_matrix(s1, s2, S, coordinate_list, backtrack_matrix, gap_penalt
                 # In the local aligner, don't accept negative scores!
                 if backtrack_matrix.iloc[i, j_j] != "X":
                     S[i, j_j] = max(s1_gap, s2_gap, mut, 0)
-                if S[i, j_j] == old_val:
-                    break
+
+    # Update the values in the bottom-right part of the final cell of the optimal local alignment.
     for i in range(coordinate_list[-1][0]+1, len(s1)+1):
         for j in range(coordinate_list[-1][1]+1, len(s2)+1):
             s1_gap = max([S[i - k, j] + utils.gap_function(gap_penalty, gap_opening_penalty, k) for k in range(1, i+1)])
@@ -176,12 +240,47 @@ def update_score_matrix(s1, s2, S, coordinate_list, backtrack_matrix, gap_penalt
 
 
 def local_aligner(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, k=1, sub_alignments_num=1, edit_function=utils.sub_matrices_distance, matrix=MatrixInfo.pam120):
+    """
+    Compute the global alignment between 2 aminoacid sequences "s1" and "s2".
+
+    Parameters
+    ----------
+    s1, s2: string
+        The two input aminoacid sequences on which the edit distance is computed.
+
+    gap_penalty: int, optional
+        The penalty factor assigned to matching an aminoacid to a gap character.
+        It should be a NEGATIVE integer.
+
+    gap_opening_penalty: int, optional
+        The penalty factor assigned for starting a gap sequence.
+        It should be a NEGATIVE integer.
+
+    k: int, optional
+        The number of best alignment to return, in case there are more alignments with the same optimal score.
+
+    sub_alignments_num: int, optional
+        The number of novel subalignments to be produced.
+
+    edit_function: function, optional
+        The function that is used to compute the cost of an aminoacid subtitution.
+
+    matrix: Bio.SubsMat.MatrixInfo.available_matrix, optional
+        The substitution matrix to be used, among the ones available in Bio.SubsMat.MatrixInfo.
+        It is used by edit_function, if needed.
+
+    Returns
+    ----------
+    array of Alignment
+        A list of k alignments, of class utils.Alignment
+    """
+
     alignments = []
     
     # Build the initial score matrix.
     [score, S, backtrack_matrix, i_max, j_max] = local_aligner_score(s1, s2, gap_penalty=gap_penalty, gap_opening_penalty=gap_opening_penalty, edit_function=edit_function, matrix=matrix)
     for n in range(sub_alignments_num):
-        align_list_n = global_aligner_2.backtrack_sequence_rec(s1[:i_max], s2[:j_max], backtrack_matrix.iloc[:i_max+1, :j_max+1], k=k)
+        align_list_n = gb2.backtrack_sequence_rec(s1[:i_max], s2[:j_max], backtrack_matrix.iloc[:i_max+1, :j_max+1], k=k)
         
         # Add the alignment scores to each alignment
         for align_i in align_list_n:
@@ -194,8 +293,8 @@ def local_aligner(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, k=1, sub_alig
         if sub_alignments_num > 1:
             # Update the score matrix to get more subalignments.
             # Get the coordinates of one best matching
-            coordinate_list = reconstruct_sequence(s1, s2, S, backtrack_matrix.iloc[:i_max+1, :j_max+1], gap_penalty, gap_opening_penalty, edit_function, matrix)
-            update_score_matrix(s1, s2, S, coordinate_list, backtrack_matrix, gap_penalty, gap_opening_penalty, edit_function, matrix)
+            coordinate_list = reconstruct_sequence(s1, s2, S, backtrack_matrix.iloc[:i_max+1, :j_max+1], gap_penalty, gap_opening_penalty, edit_function=edit_function, matrix=matrix)
+            update_score_matrix(s1, s2, S, coordinate_list, backtrack_matrix, gap_penalty, gap_opening_penalty, edit_function=edit_function, matrix=matrix)
 
             # Find the new maximum value in the matrix.
             [i_max, j_max] = np.unravel_index(np.argmax(S), S.shape)
@@ -256,4 +355,8 @@ def local_aligner(s1, s2, gap_penalty=-1, gap_opening_penalty=-10, k=1, sub_alig
 #     print(align_i)
 #
 #
-
+s1 = "MDPGQQPPPQPAPQGQGQPPSQPPQGQGPPSGPGQPAPAATQAAPQAPPAGHQIVHVRGD"
+s2 = "MADEEKLPPGWEKRMSRSSGRVYYFNHITNASQWERPSGNSSSGGKNGQGEPARVRCSHL"
+alignments = local_aligner(s1, s2, gap_penalty=-1, gap_opening_penalty=0, matrix=MatrixInfo.blosum62, sub_alignments_num=3)
+for align_i in alignments:
+    print(align_i)

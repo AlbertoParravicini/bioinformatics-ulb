@@ -351,7 +351,7 @@ def global_aligner_affine_penalty(s1, s2, gap_penalty=-1, gap_opening_penalty=-1
 
     for i in range(1, n_row):
         for j in range(1, n_col):
-            # Compute the possible movements, and then keeps the best.
+            # Compute the possible movements, and then keep the best.
             s1_gap = max([S[i - k, j] + utils.gap_function(gap_penalty, gap_opening_penalty, k) for k in range(1, i+1)])
             s2_gap = max([S[i, j - k] + utils.gap_function(gap_penalty, gap_opening_penalty, k) for k in range(1, j+1)])
             mut = S[i - 1, j - 1] + edit_function(s1[i - 1], s2[j - 1], matrix=matrix)
@@ -444,20 +444,20 @@ def global_aligner_affine_penalty(s1, s2, gap_penalty=-1, gap_opening_penalty=-1
 #print("DONE")
 
 # Load the sequences and test their edit distance
-start_time = timeit.default_timer()
-
-for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-   for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-       if i > j :
-            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
-            print("\t", seq_record_j.id, "-- length:", len(seq_record_j), "\n")
-            [score, edit_matrix, backtrack_matrix] = global_aligner_2(seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62, semiglobal=True)
-            alignments = semiglobal_backtrack(seq_record_i.seq, seq_record_j.seq, score_matrix=edit_matrix, backtrack_matrix=backtrack_matrix, k = 3)
-
-            print("\nMY ALIGNER:")
-            for align_i in alignments:
-                align_i.score = score
-                print(align_i)
-            print("--------------------------------------\n")
-end_time = timeit.default_timer()
-print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
+# start_time = timeit.default_timer()
+#
+# for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+#    for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+#        if i > j :
+#             print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
+#             print("\t", seq_record_j.id, "-- length:", len(seq_record_j), "\n")
+#             [score, edit_matrix, backtrack_matrix] = global_aligner_2(seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62, semiglobal=True)
+#             alignments = semiglobal_backtrack(seq_record_i.seq, seq_record_j.seq, score_matrix=edit_matrix, backtrack_matrix=backtrack_matrix, k = 3)
+#
+#             print("\nMY ALIGNER:")
+#             for align_i in alignments:
+#                 align_i.score = score
+#                 print(align_i)
+#             print("--------------------------------------\n")
+# end_time = timeit.default_timer()
+# print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
