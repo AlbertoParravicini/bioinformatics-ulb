@@ -126,43 +126,43 @@ def backtrack_matrix(s1, s2, input_matrix, gap_penalty=-1, edit_function=sub_mat
             raise ValueError("val={0}, but we have s1_gap={1}, s2_gap={2}, mut={3}".format(val, s1_gap, s2_gap, mut))
 
     return [aligned_s1, aligned_s2, match_sequence]
-                
-                  
-# Load the sequences and test their edit distance
-start_time = timeit.default_timer()
-
-for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-   for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
-       if i > j :
-#            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
-#            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
-            [score, edit_matrix] = global_aligner(seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62)
-            #[s1_al, s2_al, match_sequence] = backtrack_matrix(seq_record_i.seq, seq_record_j.seq, edit_matrix, gap_penalty=-1, matrix=MatrixInfo.blosum62)
-            
-#            print(s1_al)
-#            print(match_sequence)
-#            print(s2_al)
-#            print("MY ALIGNER:", score)
-#            print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.blosum62, score_only = True))
-#            print("\n")
-end_time = timeit.default_timer()
-print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
-
-
-
-
-s1 = "THISLINE"
-s2 = "ISALIGNED"
-[score, edit_matrix] = global_aligner(s1, s2, gap_penalty=-4, matrix=MatrixInfo.blosum62, semiglobal=True)
-
-print(edit_matrix)
-print(score)
-
-edit_frame = pd.DataFrame(edit_matrix)
-edit_frame.index = list(" " + s1)
-edit_frame.columns = list(" " + s2)
-
-[s1_al, s2_al, mat] = backtrack_matrix(s1, s2, edit_matrix, gap_penalty=-4, matrix=MatrixInfo.blosum62, semiglobal=True)
-print(s1_al)
-print(mat)
-print(s2_al)
+#
+#
+# # Load the sequences and test their edit distance
+# start_time = timeit.default_timer()
+#
+# for i, seq_record_i in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+#    for j, seq_record_j in enumerate(SeqIO.parse("../data/WW-sequence.fasta", "fasta")):
+#        if i > j :
+# #            print("Comparing:\n\t", seq_record_i.id, "-- length:", len(seq_record_i))
+# #            print("\t", seq_record_j.id, "-- length:", len(seq_record_j))
+#             [score, edit_matrix] = global_aligner(seq_record_i.seq,  seq_record_j.seq, gap_penalty=-1, matrix=MatrixInfo.blosum62)
+#             #[s1_al, s2_al, match_sequence] = backtrack_matrix(seq_record_i.seq, seq_record_j.seq, edit_matrix, gap_penalty=-1, matrix=MatrixInfo.blosum62)
+#
+# #            print(s1_al)
+# #            print(match_sequence)
+# #            print(s2_al)
+# #            print("MY ALIGNER:", score)
+# #            print("BIOPYTHON ALIGNER", pairwise2.align.globaldx(seq_record_i.seq, seq_record_j.seq, MatrixInfo.blosum62, score_only = True))
+# #            print("\n")
+# end_time = timeit.default_timer()
+# print("! -> EXECUTION TIME:", (end_time - start_time), "\n")
+#
+#
+#
+#
+# s1 = "THISLINE"
+# s2 = "ISALIGNED"
+# [score, edit_matrix] = global_aligner(s1, s2, gap_penalty=-4, matrix=MatrixInfo.blosum62, semiglobal=True)
+#
+# print(edit_matrix)
+# print(score)
+#
+# edit_frame = pd.DataFrame(edit_matrix)
+# edit_frame.index = list(" " + s1)
+# edit_frame.columns = list(" " + s2)
+#
+# [s1_al, s2_al, mat] = backtrack_matrix(s1, s2, edit_matrix, gap_penalty=-4, matrix=MatrixInfo.blosum62, semiglobal=True)
+# print(s1_al)
+# print(mat)
+# print(s2_al)
