@@ -111,7 +111,7 @@ def build_sj_aj_ajm(input_data, print_details=True):
     and aminoacid a_jm appears at a distance m from them, with m in [-8, 8].
     """
     # Set of all proteins.
-    protein_set = list(set(input_data.PDB_code))
+    protein_set = list(set(input_data.PDB_code_and_chain))
     # Set of all secondary structures.
     sec_structure_set = list(set(input_data.s))
     # Set of all aminoacids.
@@ -124,8 +124,8 @@ def build_sj_aj_ajm(input_data, print_details=True):
     # otherwise the aminoacids at the end of one protein would be counted
     # as part of the next one!
     for i_p, p in enumerate(protein_set):
-        s_list = input_data.loc[input_data['PDB_code'] == p].s
-        a_list = input_data.loc[input_data['PDB_code'] == p].a
+        s_list = input_data.loc[input_data['PDB_code_and_chain'] == p].s
+        a_list = input_data.loc[input_data['PDB_code_and_chain'] == p].a
         n = len(s_list)
         for i_aj, a_j in enumerate(aminoacid_set):
             for i_ajm, a_jm in enumerate(aminoacid_set):
@@ -295,7 +295,7 @@ def compute_gor_3(a_list, i, sj_aj_ajm_dict, sj_aj_matrix, a_occ, l_1_out=False)
 
 if __name__ == '__main__':
     # Type of the data to read ("stride", "dssp")
-    data_type = "stride"
+    data_type = "dssp"
     # File name
     file_name = "../data/" + data_type + "_info.txt"
     # Read the data
@@ -332,19 +332,19 @@ if __name__ == '__main__':
     ##########################
     # UNCOMMENT IF NEEDED ####
     ##########################
-    # sj_aj_ajm_dict = build_sj_aj_ajm(input_data)
+    sj_aj_ajm_dict = build_sj_aj_ajm(input_data)
     end_time = timeit.default_timer()
     print("! -> EXECUTION TIME OF build_sj_aj_ajm:", (end_time - start_time), "\n")
 
     # Save data
     dict_file_name = "sj_aj_ajm_dict_"+ data_type + ".p"
 
-    # # Open the file for writing.
-    # file_object = open(dict_file_name.encode('utf-8').strip(), 'wb')
-    # # Save data
-    # pickle.dump(sj_aj_ajm_dict, file_object)
-    #
-    # file_object.close()
+    # Open the file for writing.
+    file_object = open(dict_file_name.encode('utf-8').strip(), 'wb')
+    # Save data
+    pickle.dump(sj_aj_ajm_dict, file_object)
+
+    file_object.close()
 
     # Load data
     file_object = open(dict_file_name.encode('utf-8').strip(), 'rb')
