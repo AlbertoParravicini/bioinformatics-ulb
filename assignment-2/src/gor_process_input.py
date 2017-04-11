@@ -31,6 +31,13 @@ aminoacid_codes = {"ala":  "a",
 
 
 def preprocess_input(file_name, aminoacid_codes):
+    """
+    Load and preprocess a file containing protein sequences.
+    The output will be a DataFrame ready to be used by GOR.
+    :param file_name: string, name of the file to be opened.
+    :param aminoacid_codes: dictionary that maps aminoacid codes to single letters.
+    :return: DataFrame
+    """
     # Load the data
     input_data = pd.read_csv(file_name,
                          header=None, sep="\t",
@@ -63,6 +70,10 @@ def preprocess_input(file_name, aminoacid_codes):
     # Shorten values
     input_data["s"] = input_data["s"].str[0]
 
+    # Add a composite key to the dataset.
+    # Append the PDB chain code to the PDB code, to obtain unique protein identifier.
+    input_data["PDB_code_and_chain"] = input_data.PDB_code + "_" + input_data.PDB_chain_code
+
     return input_data
 
 
@@ -71,6 +82,9 @@ def preprocess_input(file_name, aminoacid_codes):
 def build_sj_aj_matrix(s_list, a_list):
     """
     Count the number of times that each aminoacid a_j has secondary structure s_j.
+    :param s_list: a list of secondary structures; pandas Series.
+    :param a_list: a list of aminoacids; pandas Series.
+    :return: pandas.DataFrame
     """
     # Set of all secondary structures.
     sec_structure_set = set(s_list)
@@ -91,7 +105,7 @@ def build_sj_aj_matrix(s_list, a_list):
 
 #%% Build S_j, A_j, A_jm matrix
 
-def build_sj_aj_ajm(input_data):
+def build_sj_aj_ajm(input_data, print_details=True):
     """
     Count the times where aminoacid a_j appears with secondary structure s_j,
     and aminoacid a_jm appears at a distance m from them, with m in [-8, 8].
@@ -106,6 +120,9 @@ def build_sj_aj_ajm(input_data):
     # with index a_j, a_jm, m.
     sj_aj_ajm_dict = {s: pd.Panel(data=0, items=aminoacid_set, major_axis=aminoacid_set, minor_axis=np.arange(-8, 9), dtype=int) for s in sec_structure_set}
 
+    # The counting must be done separately for each protein,
+    # otherwise the aminoacids at the end of one protein would be counted
+    # as part of the next one!
     for i_p, p in enumerate(protein_set):
         s_list = input_data.loc[input_data['PDB_code'] == p].s
         a_list = input_data.loc[input_data['PDB_code'] == p].a
@@ -113,10 +130,13 @@ def build_sj_aj_ajm(input_data):
         for i_aj, a_j in enumerate(aminoacid_set):
             for i_ajm, a_jm in enumerate(aminoacid_set):
                 for i_m, m in enumerate(np.arange(-8, 9)):
-                    print(p, a_j, a_jm, m, "-------", i_p / len(protein_set), i_aj / 20, i_ajm / 20)
+                    if print_details:
+                        print(p, a_j, a_jm, m, "-------", i_p / len(protein_set), i_aj / 20, i_ajm / 20)
 
                     for i in range(max(0, -m), min(n, n - m)):
                         if a_list.iat[i] == a_j and a_list.iat[i + m] == a_jm:
+                            # Increment the count of the right dictionary.
+
                             sj_aj_ajm_dict[s_list.iat[i]].iat[i_aj, i_ajm, i_m] += 1
 
     return sj_aj_ajm_dict
@@ -182,6 +202,17 @@ def count_aminoacid_lag(a_list, a_j, a_jm, lag):
     return count
 
 def info_value_gor_1(s_list, a_list, s_j, a_jm, lag, a_occ):
+    """
+    Compute the information value associated to a secondary structure s_j, in position j,
+    and to an aminoacid a_jm, at distance m from s_j.
+    :param s_list: a list of secondary structures; pandas Series.
+    :param a_list: a list of aminoacids; pandas Series.
+    :param s_j: a secondary structure name
+    :param a_jm: an aminoacid name
+    :param lag: distance from a_j at which a_jm is searched
+    :param a_occ: number of occurrencies of each aminoacid
+    :return: double
+    """
     num_1 = count_residues_gor_1(s_list, a_list, s_j, a_jm, lag)
     den_1 = a_occ[a_jm] - num_1
     den_2 = s_occ[s_j]
@@ -189,6 +220,19 @@ def info_value_gor_1(s_list, a_list, s_j, a_jm, lag, a_occ):
     return np.log(num_1 * num_2) - np.log(den_1 * den_2)          
 
 def info_value_gor_3(s_list, a_list, s_j, a_j, a_jm, lag, a_occ):
+    """
+    Compute the information value associated to an aminoacid a_j in position j,
+    with secondary structure s_j, in position j,
+    and to an aminoacid a_jm, at distance m from s_j.
+    :param s_list: a list of secondary structures; pandas Series.
+    :param a_list: a list of aminoacids; pandas Series.
+    :param s_j: a secondary structure name
+    :param a_j: an aminoacid name
+    :param a_jm: an aminoacid name
+    :param lag: distance from a_j at which a_jm is searched
+    :param a_occ: number of occurrencies of each aminoacid
+    :return: double
+    """
     # Num of times s_j appears with a_j, and a_jm is lag position distant.
     num_1 = count_residues_gor_3(s_list, a_list, s_j, a_j, a_jm, lag)
     # Num of times a_j appears with a secondary structure different from s_j,
@@ -305,3 +349,6 @@ if __name__ == '__main__':
     # Load data
     file_object = open(dict_file_name.encode('utf-8').strip(), 'rb')
     sj_aj_ajm_dict = pickle.load(file_object)
+    
+    
+
