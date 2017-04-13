@@ -18,10 +18,22 @@
       <file leaf-file-name="gor_process_input.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gor_process_input.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6600">
-              <caret line="174" column="55" lean-forward="true" selection-start-line="174" selection-start-column="55" selection-end-line="174" selection-end-column="55" />
+            <state relative-caret-position="680">
+              <caret line="17" column="23" lean-forward="false" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="23" />
               <folding>
                 <element signature="e#17#36#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="plotting_and_analysis.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/plotting_and_analysis.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="160">
+              <caret line="4" column="85" lean-forward="false" selection-start-line="4" selection-start-column="85" selection-end-line="4" selection-end-column="85" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -30,7 +42,7 @@
       <file leaf-file-name="gor_compute_predictions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gor_compute_predictions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3429">
+            <state relative-caret-position="7731">
               <caret line="221" column="0" lean-forward="false" selection-start-line="221" selection-start-column="0" selection-end-line="221" selection-end-column="0" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
@@ -73,6 +85,7 @@
         <option value="$PROJECT_DIR$/src/predict_sec_struct.py" />
         <option value="$PROJECT_DIR$/src/gor_process_input.py" />
         <option value="$PROJECT_DIR$/src/gor_compute_predictions.py" />
+        <option value="$PROJECT_DIR$/src/plotting_and_analysis.py" />
       </list>
     </option>
   </component>
@@ -366,7 +379,7 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-13" y="-13" width="2762" height="1770" extended-state="6" />
+    <frame x="-13" y="-13" width="2762" height="1770" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24777117" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -509,9 +522,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/plotting_and_analysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="4" column="85" lean-forward="false" selection-start-line="4" selection-start-column="85" selection-end-line="4" selection-end-column="85" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/gor_compute_predictions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3429">
+        <state relative-caret-position="7731">
           <caret line="221" column="0" lean-forward="false" selection-start-line="221" selection-start-column="0" selection-end-line="221" selection-end-column="0" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
@@ -522,8 +545,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gor_process_input.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6600">
-          <caret line="174" column="55" lean-forward="true" selection-start-line="174" selection-start-column="55" selection-end-line="174" selection-end-column="55" />
+        <state relative-caret-position="680">
+          <caret line="17" column="23" lean-forward="false" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="23" />
           <folding>
             <element signature="e#17#36#0" expanded="true" />
           </folding>
