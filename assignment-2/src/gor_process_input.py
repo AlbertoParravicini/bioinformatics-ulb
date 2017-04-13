@@ -87,7 +87,7 @@ def build_sj_aj_matrix(s_list, a_list):
     :return: pandas.DataFrame
     """
     # Set of all secondary structures.
-    sec_structure_set = set(s_list)
+    sec_structure_set = ["h", "b", "c"]
     # Set of all aminoacids.
     aminoacid_set = set(a_list)
     # Occurrency matrix.
@@ -113,7 +113,7 @@ def build_sj_aj_ajm(input_data, print_details=True):
     # Set of all proteins.
     protein_set = list(set(input_data.PDB_code_and_chain))
     # Set of all secondary structures.
-    sec_structure_set = list(set(input_data.s))
+    sec_structure_set = ["h", "b", "c"]
     # Set of all aminoacids.
     aminoacid_set = list(set(input_data.a))
     # Build a dictionary where the keys are the secondary structures, and the values are 3D tensors
@@ -250,42 +250,6 @@ def info_value_gor_3(s_list, a_list, s_j, a_j, a_jm, lag, a_occ):
 ###################
 # END OF OUTDATED #
 ###################
-
-#%% GOR
-
-def compute_gor_3(a_list, i, sj_aj_ajm_dict, sj_aj_matrix, a_occ, l_1_out=False):
-    if i < 0 or i >= len(a_list):
-        print("Index out of range:", i, "-- List length:", len(a_list))
-        raise IndexError
-
-    min_range = max(-i, -8)
-    max_range = min(9, len(a_list) - i)
-
-    a_j = a_list.iat[i]
-
-    info_tot = {"h": 0, "b": 0, "c": 0}
-    for s in info_tot.keys():
-        for m in range(min_range, max_range):
-            a_jm = a_list.iat[i + m]
-
-            # Num of times s_j appears with a_j, and a_jm is lag position distant.
-            num_1 = sj_aj_ajm_dict[s].at[a_j, a_jm, m] - (1 if l_1_out else 0)
-            # Num of times a_j appears with a secondary structure different from s_j,
-            # and a_jm is lag position distant.
-            den_1 = sum([sj_aj_ajm_dict[s_i].at[a_j, a_jm, m] for s_i in info_tot.keys()]) - num_1 + (1 if l_1_out else 0)
-
-            # Number of times aminoacid a_j appears together with structure s_j.
-            den_2 = sj_aj_matrix.at[s, a_j] - (1 if l_1_out else 0)
-            # Number of times aminoacid a_j appears with a different structure from s_j.
-            num_2 = a_occ.at[a_j] - den_2 + (1 if l_1_out else 0)
-
-            # Add up the information value.
-            info_tot[s] += np.log(num_1) - np.log(den_1) + np.log(num_2) - np.log(den_2)
-
-    # Predict the secondary structure with highest value.
-    return [max(info_tot, key=info_tot.get), max(info_tot.values())]
-
-
 
 
 

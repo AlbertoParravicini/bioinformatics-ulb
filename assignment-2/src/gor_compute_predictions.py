@@ -37,6 +37,65 @@ class SecStructPrediction:
     def __repr__(self):
         return str(self)
 
+
+#%% GOR
+
+def compute_gor_3(a_list, i, sj_aj_ajm_dict, sj_aj_matrix, a_occ, l_1_out=False, l1o_dict=None, l1o_sjaj=None):
+    """
+    Compute the GOR III information value for the given aminoacid, and return the best secondary structure prediction
+    :param a_list: pandas.Series; input aminoacid sequence.
+    :param i: position in the sequence for which the prediction is done.
+    :param sj_aj_ajm_dict: dictionary used by the GOR III model.
+    :param sj_aj_matrix: occurrency matrix used by the GOR III model.
+    :param a_occ: occurrencies of each aminoacid, used by the GOR III model.
+    :param l_1_out: boolean; do leave one out on the given GOR III model.
+    :param l1o_dict:
+    :param l1o_sjaj:
+    :return: a tuple containing (structure_prediction, prediction_score)
+    """
+    if i < 0 or i >= len(a_list):
+        print("Index out of range:", i, "-- List length:", len(a_list))
+        raise IndexError
+
+    min_range = max(-i, -8)
+    max_range = min(9, len(a_list) - i)
+
+    a_j = a_list.iat[i]
+
+
+    info_tot = {"h": 0, "b": 0, "c": 0}
+    for s in info_tot.keys():
+        for m in range(min_range, max_range):
+            a_jm = a_list.iat[i + m]
+
+            # Values to subtract in "leave-one-out"
+            # sub_1 = (l1o_dict[s].at[a_j, a_jm, m] if l_1_out else 0)
+            # sub_2 = (l1o_sjaj.at[s, a_j] if l_1_out else 0)
+            sub_1 = (1 if l_1_out else 0)
+            sub_2 = (1 if l_1_out else 0)
+
+            # Num of times s_j appears with a_j, and a_jm is lag position distant.
+            num_1 = sj_aj_ajm_dict[s].at[a_j, a_jm, m] - sub_1
+            # Num of times a_j appears with a secondary structure different from s_j,
+            # and a_jm is lag position distant.
+            den_1 = sum([sj_aj_ajm_dict[s_i].at[a_j, a_jm, m] for s_i in info_tot.keys()]) - num_1 - sub_1
+
+            # Number of times aminoacid a_j appears together with structure s_j.
+            den_2 = sj_aj_matrix.at[s, a_j] - sub_2
+            # Number of times aminoacid a_j appears with a different structure from s_j.
+            num_2 = a_occ.at[a_j] - den_2 - sub_2
+
+            # Add up the information value.
+            info_tot[s] += np.log(num_1) - np.log(den_1) + np.log(num_2) - np.log(den_2)
+
+    # Predict the secondary structure with highest value.
+    return [max(info_tot, key=info_tot.get), max(info_tot.values())]
+
+
+
+
+
+
 def predict_sec_structures(input_data, data_type="dssp", print_details=False):
     """
     Predict the secondary structures of the input data set.
@@ -72,9 +131,17 @@ def predict_sec_structures(input_data, data_type="dssp", print_details=False):
         # Extract aminoacid and secondary structures for a given protein.
         a_list = input_data.loc[input_data['PDB_code'] == p].a
         s_list = input_data.loc[input_data['PDB_code'] == p].s
+
+
+        # Build a temporary dictionary for the protein that is examined,
+        # it will be used for "leave-one-out"
+        temp_dict = None
+        temp_sjaj = None
+        # temp_dict = gori.build_sj_aj_ajm(pd.DataFrame({"PDB_code_and_chain": p, "a": a_list, "s": s_list}), print_details=False)
+        # temp_sjaj = gori.build_sj_aj_matrix(s_list, a_list)
         for i in range(0, len(a_list)):
             # Predict the secondary structure for a given aminoacid of the protein.
-            res = gori.compute_gor_3(a_list, i, sj_aj_ajm_dict, sj_aj_matrix, a_occ, l_1_out=True)
+            res = compute_gor_3(a_list, i, sj_aj_ajm_dict, sj_aj_matrix, a_occ, l_1_out=True, l1o_dict=temp_dict, l1o_sjaj=temp_sjaj)
             # Add the new secondary structure that is predicted
             pred += res[0]
             if res[0] == s_list.iat[i]:
@@ -129,7 +196,7 @@ def compute_mcc(prediction_seq, real_seq, sec_structure):
 
 if __name__ == '__main__':
 
-     # Type of the data to read ("stride", "dssp")
+    # Type of the data to read ("stride", "dssp")
     data_type = "stride"
     # File name
     file_name = "../data/" + data_type + "_info.txt"
@@ -139,6 +206,7 @@ if __name__ == '__main__':
     # Append the PDB chain code to the PDB code, to obtain unique protein identifier.
     input_data.PDB_code = input_data.PDB_code + "_" + input_data.PDB_chain_code
 
+    # Make the predictions.
     prediction_list = predict_sec_structures(input_data, data_type, True)
     # Overall Q3
     q3_tot = np.mean([x.q3 for x in prediction_list])
@@ -150,7 +218,8 @@ if __name__ == '__main__':
      
     # Add a composite key to the cath data
     cath["PDB_code_and_chain"] = cath.PDB_code + "_" + cath.PDB_chain
-    
+
+
     # Save predictions in a file.
     result_frame = pd.DataFrame(index=range(len(prediction_list)), columns=["PDB_code_and_chain",
                                                                             "length",

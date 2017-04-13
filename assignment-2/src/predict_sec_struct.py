@@ -1,4 +1,3 @@
-from sklearn.datasets import load_iris
 from sklearn.ensemble import RandomForestClassifier
 
 import pandas as pd
@@ -13,10 +12,10 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
 
-     # Type of the data to read ("stride", "dssp")
+    # Type of the data to read ("stride", "dssp")
     data_type = "stride"
     # File name
-    file_name = "../data/pred_result_" + data_type + ".csv"
+    file_name = "../data/pred_result_" + data_type + "_2.csv"
     # Read the prediction data
     pred_data = pd.read_csv(file_name)
     
@@ -24,7 +23,7 @@ if __name__ == '__main__':
     # pred_data = pred_data.drop(pred_data[pred_data["overall_structure_real"].isin(["None"])].index).reset_index(drop=True)
 
     
-    features = [1] + list(range(4, 7)) + list(range(10, 30)) + list(range(31, 36))
+    features = [1] + list(range(4, 7)) + list(range(10, 30)) #+ list(range(31, 36))
     x_train = pred_data.iloc[:, features]
     y_train = pred_data.overall_structure_real
     
@@ -34,19 +33,19 @@ if __name__ == '__main__':
 
     clf = RandomForestClassifier(n_estimators=200, n_jobs = 2, criterion="entropy", bootstrap=False, min_samples_split=2, min_samples_leaf=2, max_depth=9, max_features=10) 
     
-#    param_grid = {
-#                     'n_estimators': [15, 100, 200, 300]
-#                 }
-#    
-#    grid_clf = GridSearchCV(clf, param_grid, cv=6, verbose=2, n_jobs=10)
-#    grid_clf.fit(x_train, y_train)
-#    
-#    print("\n-------- BEST ESTIMATOR --------\n")
-#    print(grid_clf.best_estimator_)
-#    print("\n-------- BEST PARAMS --------\n")
-#    print(grid_clf.best_params_)
-#    print("\n-------- BEST SCORE --------\n")
-#    print(grid_clf.best_score_)
+    param_grid = {
+                     'n_estimators': [15, 100, 200, 300]
+                 }
+    
+    grid_clf = GridSearchCV(clf, param_grid, cv=6, verbose=2, n_jobs=10)
+    grid_clf.fit(x_train, y_train)
+    
+    print("\n-------- BEST ESTIMATOR --------\n")
+    print(grid_clf.best_estimator_)
+    print("\n-------- BEST PARAMS --------\n")
+    print(grid_clf.best_params_)
+    print("\n-------- BEST SCORE --------\n")
+    print(grid_clf.best_score_)
 
 
             
