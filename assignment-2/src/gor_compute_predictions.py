@@ -10,12 +10,15 @@ class SecStructPrediction:
     It can store the PDB code of a protein, its aminoacid sequence, the real secondary structure and the predicted one,
     and more. Fields can be left empty if the information are not available.
     """
-    def __init__(self, pdb_code="", protein="", prediction="", real_sec_structure="", q3=0, mcc_h=0, mcc_b=0, mcc_c=0, mcc=0, overall_prediction=""):
+    def __init__(self, pdb_code="", protein="", prediction="", real_sec_structure="", q3=0, q3_h=0, q3_b=0, q3_c=0, mcc_h=0, mcc_b=0, mcc_c=0, mcc=0, overall_prediction=""):
         self.pdb_code = pdb_code
         self.protein = protein
         self.prediction = prediction
         self.real_sec_structure = real_sec_structure
         self.q3 = q3
+        self.q3_h = q3_h
+        self.q3_b = q3_b
+        self.q3_c = q3_c
         self.mcc_h = mcc_h
         self.mcc_b = mcc_b
         self.mcc_c = mcc_c
@@ -28,6 +31,9 @@ class SecStructPrediction:
                self.real_sec_structure + "\n" +\
                self.prediction +\
                "\nMETRICS -- Q3:" + "{:.3f}".format(self.q3) +\
+               " -- Q3_h:" + "{:.3f}".format(self.q3_h) +\
+               " -- Q3_b:" + "{:.3f}".format(self.q3_b) +\
+               " -- Q3_c:" + "{:.3f}".format(self.q3_c) +\
                " -- MCC_h:" + "{:.3f}".format(self.mcc_h) +\
                " -- MCC_b:" + "{:.3f}".format(self.mcc_b) +\
                " -- MCC_c:" + "{:.3f}".format(self.mcc_c) +\
@@ -147,15 +153,22 @@ def predict_sec_structures(input_data, data_type="dssp", print_details=False):
             if res[0] == s_list.iat[i]:
                 acc += 1
 
-        mcc_h=compute_mcc(pred, s_list.to_string(header=False, index=False).replace("\n", ""), "h")
-        mcc_b=compute_mcc(pred, s_list.to_string(header=False, index=False).replace("\n", ""), "b")
-        mcc_c=compute_mcc(pred, s_list.to_string(header=False, index=False).replace("\n", ""), "c")
-
+        mcc_h, tp_h, _, _, _ = compute_mcc(pred, s_list.to_string(header=False, index=False).replace("\n", ""), "h")
+        mcc_b, tp_b, _, _, _ = compute_mcc(pred, s_list.to_string(header=False, index=False).replace("\n", ""), "b")
+        mcc_c, tp_c, _, _, _ = compute_mcc(pred, s_list.to_string(header=False, index=False).replace("\n", ""), "c")
+        
+        
+        h_count = s_list.to_string().count("h")
+        b_count = s_list.to_string().count("b")
+        c_count = s_list.to_string().count("c")
         prediction = SecStructPrediction(pdb_code=p,
                                          protein=a_list.to_string(header=False, index=False).replace("\n", ""),
                                          prediction=pred,
                                          real_sec_structure=s_list.to_string(header=False, index=False).replace("\n", ""),
-                                         q3=acc / len(a_list),
+                                         q3= acc / len(a_list),
+                                         q3_h = (tp_h / h_count) if h_count > 0 else 1,
+                                         q3_b = (tp_b / b_count) if b_count > 0 else 1,
+                                         q3_c = (tp_c / c_count) if c_count > 0 else 1,
                                          mcc_h=mcc_h,
                                          mcc_b=mcc_b,
                                          mcc_c=mcc_c,
@@ -192,12 +205,12 @@ def compute_mcc(prediction_seq, real_seq, sec_structure):
         # See https://en.wikipedia.org/wiki/Matthews_correlation_coefficient
         # Doing so will give an mcc af 0, i.e. a null correlation.
         mcc = tp*tn - fp*fn
-    return mcc
+    return [mcc, tp, fn, fp, tn]
 
 if __name__ == '__main__':
 
     # Type of the data to read ("stride", "dssp")
-    data_type = "stride"
+    data_type = "dssp"
     # File name
     file_name = "../data/" + data_type + "_info.txt"
     # Read the data
@@ -253,6 +266,9 @@ if __name__ == '__main__':
                                                                             "num_am_v",
                                                                             "protein",
                                                                             "q3",
+                                                                            "q3_h",
+                                                                            "q3_b",
+                                                                            "q3_c",
                                                                             "mcc_h",
                                                                             "mcc_b",
                                                                             "mcc_c",
@@ -292,12 +308,15 @@ if __name__ == '__main__':
         result_frame.iloc[p_i, 29] = p.protein.count("v")
         result_frame.iloc[p_i, 30] = p.protein
         result_frame.iloc[p_i, 31] = p.q3
-        result_frame.iloc[p_i, 32] = p.mcc_h
-        result_frame.iloc[p_i, 33] = p.mcc_b
-        result_frame.iloc[p_i, 34] = p.mcc_c
-        result_frame.iloc[p_i, 35] = p.mcc
-        result_frame.iloc[p_i, 36] = p.overall_prediction
-        result_frame.iloc[p_i, 37] = cath.loc[cath['PDB_code_and_chain'] == p.pdb_code].overall_structure.iloc[0]
+        result_frame.iloc[p_i, 32] = p.q3_h
+        result_frame.iloc[p_i, 33] = p.q3_b
+        result_frame.iloc[p_i, 34] = p.q3_c
+        result_frame.iloc[p_i, 35] = p.mcc_h
+        result_frame.iloc[p_i, 36] = p.mcc_b
+        result_frame.iloc[p_i, 37] = p.mcc_c
+        result_frame.iloc[p_i, 38] = p.mcc
+        result_frame.iloc[p_i, 39] = p.overall_prediction
+        result_frame.iloc[p_i, 40] = cath.loc[cath['PDB_code_and_chain'] == p.pdb_code].overall_structure.iloc[0]
         
     result_frame.to_csv("../data/pred_result_" + data_type + ".csv", index=False)
 
