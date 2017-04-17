@@ -259,7 +259,7 @@ def info_value_gor_3(s_list, a_list, s_j, a_j, a_jm, lag, a_occ):
 
 if __name__ == '__main__':
     # Type of the data to read ("stride", "dssp")
-    data_type = "dssp"
+    data_type = "stride"
     # File name
     file_name = "../data/" + data_type + "_info.txt"
     # Read the data
@@ -277,15 +277,42 @@ if __name__ == '__main__':
 
     # Compute the number of occurrencies of each aminoacid
     a_occ = input_data["a"].value_counts()
-
+    
     # Compute the number of occurrencies of each secondary structure
     s_occ = input_data["s"].value_counts()
+    
+    
+    # Save data
+    a_occ_file_name = "a_occ_"+ data_type + ".p"
+    # Open the file for writing.
+    file_object = open(a_occ_file_name.encode('utf-8').strip(), 'wb')
+    # Save data
+    pickle.dump(a_occ, file_object)
+    file_object.close()
+    
+    s_occ_file_name = "s_occ_"+ data_type + ".p"
+    # Open the file for writing.
+    file_object = open(s_occ_file_name.encode('utf-8').strip(), 'wb')
+    # Save data
+    pickle.dump(s_occ, file_object)
+    file_object.close()
+    
 
     # Count how many times each aminoacid has a given secondary structure.
     start_time = timeit.default_timer()
     sj_aj_matrix = build_sj_aj_matrix(input_data.s, input_data.a)
     end_time = timeit.default_timer()
     print("! -> EXECUTION TIME OF build_sj_aj_matrix:", (end_time - start_time), "\n")
+    
+    # Save data
+    mat_file_name = "sj_aj_matrix_"+ data_type + ".p"
+
+    # Open the file for writing.
+    file_object = open(mat_file_name.encode('utf-8').strip(), 'wb')
+    # Save data
+    pickle.dump(sj_aj_matrix, file_object)
+
+    file_object.close()
 
 
     # Count the times where aminoacid a_j appears with secondary structure s_j,
@@ -296,23 +323,23 @@ if __name__ == '__main__':
     ##########################
     # UNCOMMENT IF NEEDED ####
     ##########################
-    sj_aj_ajm_dict = build_sj_aj_ajm(input_data)
-    end_time = timeit.default_timer()
-    print("! -> EXECUTION TIME OF build_sj_aj_ajm:", (end_time - start_time), "\n")
-
-    # Save data
-    dict_file_name = "sj_aj_ajm_dict_"+ data_type + ".p"
-
-    # Open the file for writing.
-    file_object = open(dict_file_name.encode('utf-8').strip(), 'wb')
-    # Save data
-    pickle.dump(sj_aj_ajm_dict, file_object)
-
-    file_object.close()
-
-    # Load data
-    file_object = open(dict_file_name.encode('utf-8').strip(), 'rb')
-    sj_aj_ajm_dict = pickle.load(file_object)
+#    sj_aj_ajm_dict = build_sj_aj_ajm(input_data)
+#    end_time = timeit.default_timer()
+#    print("! -> EXECUTION TIME OF build_sj_aj_ajm:", (end_time - start_time), "\n")
+#
+#    # Save data
+#    dict_file_name = "sj_aj_ajm_dict_"+ data_type + ".p"
+#
+#    # Open the file for writing.
+#    file_object = open(dict_file_name.encode('utf-8').strip(), 'wb')
+#    # Save data
+#    pickle.dump(sj_aj_ajm_dict, file_object)
+#
+#    file_object.close()
+#
+#    # Load data
+#    file_object = open(dict_file_name.encode('utf-8').strip(), 'rb')
+#    sj_aj_ajm_dict = pickle.load(file_object)
     
     
 

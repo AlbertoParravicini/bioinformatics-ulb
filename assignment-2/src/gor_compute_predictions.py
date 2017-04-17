@@ -46,7 +46,7 @@ class SecStructPrediction:
 
 #%% GOR
 
-def compute_gor_3(a_list, i, sj_aj_ajm_dict, sj_aj_matrix, a_occ, l_1_out=False, l1o_dict=None, l1o_sjaj=None):
+def compute_gor_3(a_list, i, sj_aj_ajm_dict, sj_aj_matrix, a_occ, l_1_out=False):
     """
     Compute the GOR III information value for the given aminoacid, and return the best secondary structure prediction
     :param a_list: pandas.Series; input aminoacid sequence.
@@ -75,8 +75,6 @@ def compute_gor_3(a_list, i, sj_aj_ajm_dict, sj_aj_matrix, a_occ, l_1_out=False,
             a_jm = a_list.iat[i + m]
 
             # Values to subtract in "leave-one-out"
-            # sub_1 = (l1o_dict[s].at[a_j, a_jm, m] if l_1_out else 0)
-            # sub_2 = (l1o_sjaj.at[s, a_j] if l_1_out else 0)
             sub_1 = (1 if l_1_out else 0)
             sub_2 = (1 if l_1_out else 0)
 
@@ -102,7 +100,7 @@ def compute_gor_3(a_list, i, sj_aj_ajm_dict, sj_aj_matrix, a_occ, l_1_out=False,
 
 
 
-def predict_sec_structures(input_data, data_type="dssp", print_details=False):
+def predict_sec_structures(input_data, data_type="dssp", print_details=False, l_1_out=True):
     """
     Predict the secondary structures of the input data set.
     The input data set is divided in proteins, and for each protein are given
@@ -119,18 +117,27 @@ def predict_sec_structures(input_data, data_type="dssp", print_details=False):
 
     file_object = open(dict_file_name.encode('utf-8').strip(), 'rb')
     sj_aj_ajm_dict = pickle.load(file_object)
+    file_object.close()
 
-    # Compute sj_aj_matrix abd a_occ;
-    # it's done again as it's fast, no need to store the precomputed matrices.
-    a_occ = input_data["a"].value_counts()
-    sj_aj_matrix = gori.build_sj_aj_matrix(input_data.s, input_data.a)
+    # Load data
+    a_occ_file_name = "a_occ_"+ data_type + ".p"
+    file_object = open(a_occ_file_name.encode('utf-8').strip(), 'rb')
+    a_occ = pickle.load(file_object)
+    file_object.close()
+    
+    # Load data
+    mat_file_name = "sj_aj_matrix_"+ data_type + ".p"
+
+    file_object = open(mat_file_name.encode('utf-8').strip(), 'rb')
+    sj_aj_matrix = pickle.load(file_object)
+    file_object.close()
 
     # List that contains all the predictions, divided by protein.
     prediction_list = []
     # Measure the overall accuracy.
     tot_acc = 0
     tot_count = 0
-    for p_i, p in enumerate(list(set(input_data.PDB_code ))):
+    for p_i, p in enumerate(list(set(input_data.PDB_code))):
         # Measure the accuracy over a single protein.
         acc = 0
         pred = ""
@@ -139,15 +146,10 @@ def predict_sec_structures(input_data, data_type="dssp", print_details=False):
         s_list = input_data.loc[input_data['PDB_code'] == p].s
 
 
-        # Build a temporary dictionary for the protein that is examined,
-        # it will be used for "leave-one-out"
-        temp_dict = None
-        temp_sjaj = None
-        # temp_dict = gori.build_sj_aj_ajm(pd.DataFrame({"PDB_code_and_chain": p, "a": a_list, "s": s_list}), print_details=False)
-        # temp_sjaj = gori.build_sj_aj_matrix(s_list, a_list)
+
         for i in range(0, len(a_list)):
             # Predict the secondary structure for a given aminoacid of the protein.
-            res = compute_gor_3(a_list, i, sj_aj_ajm_dict, sj_aj_matrix, a_occ, l_1_out=True, l1o_dict=temp_dict, l1o_sjaj=temp_sjaj)
+            res = compute_gor_3(a_list, i, sj_aj_ajm_dict, sj_aj_matrix, a_occ, l_1_out=l_1_out)
             # Add the new secondary structure that is predicted
             pred += res[0]
             if res[0] == s_list.iat[i]:
@@ -207,10 +209,12 @@ def compute_mcc(prediction_seq, real_seq, sec_structure):
         mcc = tp*tn - fp*fn
     return [mcc, tp, fn, fp, tn]
 
+
+#%%
 if __name__ == '__main__':
 
     # Type of the data to read ("stride", "dssp")
-    data_type = "dssp"
+    data_type = "stride"
     # File name
     file_name = "../data/" + data_type + "_info.txt"
     # Read the data
