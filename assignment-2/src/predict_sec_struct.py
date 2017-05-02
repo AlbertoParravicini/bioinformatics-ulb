@@ -34,7 +34,13 @@ if __name__ == '__main__':
     clf = RandomForestClassifier(n_estimators=200, n_jobs = 2, criterion="entropy", bootstrap=False, min_samples_split=2, min_samples_leaf=2, max_depth=9, max_features=10) 
     
     param_grid = {
-                     'n_estimators': [15, 100, 200, 300]
+                    "n_estimators": [15, 100, 200, 300],
+                    "max_depth": [3, None],
+                    "max_features": [1, 3, 10],
+                    "min_samples_split": [1, 3, 10],
+                    "min_samples_leaf": [1, 3, 10],
+                    "bootstrap": [True, False],
+                    "criterion": ["gini", "entropy"]}
                  }
     
     grid_clf = GridSearchCV(clf, param_grid, cv=6, verbose=2, n_jobs=10)

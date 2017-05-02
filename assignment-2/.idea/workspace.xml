@@ -18,11 +18,11 @@
       <file leaf-file-name="gor_process_input.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gor_process_input.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="40">
+            <state relative-caret-position="560">
               <caret line="17" column="23" lean-forward="false" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="23" />
               <folding>
                 <element signature="e#17#36#0" expanded="true" />
-                <marker date="1492180668634" expanded="true" signature="9843:12150" ph="..." />
+                <marker date="1492274121391" expanded="true" signature="9843:12648" ph="..." />
               </folding>
             </state>
           </provider>
@@ -31,8 +31,8 @@
       <file leaf-file-name="gor_5.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gor_5.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3865">
-              <caret line="144" column="0" lean-forward="false" selection-start-line="144" selection-start-column="0" selection-end-line="144" selection-end-column="0" />
+            <state relative-caret-position="40">
+              <caret line="149" column="0" lean-forward="false" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -56,13 +56,12 @@
         <entry file="file://$PROJECT_DIR$/src/gor_compute_predictions.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="9360">
-              <caret line="234" column="0" lean-forward="false" selection-start-line="234" selection-start-column="0" selection-end-line="234" selection-end-column="0" />
+              <caret line="238" column="0" lean-forward="false" selection-start-line="238" selection-start-column="0" selection-end-line="238" selection-end-column="0" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
-                <marker date="1492273361888" expanded="true" signature="127:506" ph="..." />
-                <marker date="1492273361888" expanded="true" signature="16106:16186" ph="..." />
-                <marker date="1492273361888" expanded="true" signature="16106:16352" ph="..." />
-                <marker date="1492273361888" expanded="true" signature="16285:16352" ph="..." />
+                <marker date="1492274161238" expanded="true" signature="127:506" ph="..." />
+                <marker date="1492274161238" expanded="true" signature="5731:7931" ph="..." />
+                <marker date="1492274161238" expanded="true" signature="16260:16340" ph="..." />
               </folding>
             </state>
           </provider>
@@ -72,9 +71,11 @@
         <entry file="file://$PROJECT_DIR$/src/predict_sec_struct.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1120">
-              <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="47" selection-end-column="31" />
+              <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="53" selection-end-column="31" />
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
+                <marker date="1492554089977" expanded="true" signature="226:3327" ph="..." />
+                <marker date="1492554089977" expanded="true" signature="1029:1403" ph="..." />
               </folding>
             </state>
           </provider>
@@ -103,13 +104,15 @@
         <option value="$PROJECT_DIR$/src/plotting_and_analysis.py" />
         <option value="$PROJECT_DIR$/src/gor_process_input.py" />
         <option value="$PROJECT_DIR$/src/gor_5.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-11" />
-    <option name="width" value="2750" />
-    <option name="height" value="1755" />
+    <option name="x" value="-13" />
+    <option name="y" value="-13" />
+    <option name="width" value="2762" />
+    <option name="height" value="1770" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -158,9 +161,10 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../dataa-challenge" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="Python" />
   </component>
-  <component name="RunManager" selected="Python.gor_compute_predictions">
+  <component name="RunManager" selected="Python.scratch">
     <configuration default="false" name="gor" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -174,6 +178,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="assignment-2" />
       <option name="SCRIPT_NAME" value="C:\Users\albyr\Documents\bioinformatics-ulb\assignment-2\src\gor_process_input.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="gor_compute_predictions" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="assignment-2" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/gor_compute_predictions.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -212,6 +233,23 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
+    <configuration default="false" name="predict_sec_struct" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="assignment-2" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/predict_sec_struct.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
     <configuration default="false" name="gor_process_input" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -225,6 +263,57 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="assignment-2" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/gor_process_input.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="gor_process_input" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="assignment-2" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/gor_process_input.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="assignment-2" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="assignment-2" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -376,18 +465,24 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <list size="4">
+    <list size="9">
       <item index="0" class="java.lang.String" itemvalue="Python.gor" />
       <item index="1" class="java.lang.String" itemvalue="Python.gor_compute_predictions" />
-      <item index="2" class="java.lang.String" itemvalue="Python.predict_sec_struct" />
-      <item index="3" class="java.lang.String" itemvalue="Python.gor_process_input" />
+      <item index="2" class="java.lang.String" itemvalue="Python.gor_compute_predictions" />
+      <item index="3" class="java.lang.String" itemvalue="Python.predict_sec_struct" />
+      <item index="4" class="java.lang.String" itemvalue="Python.predict_sec_struct" />
+      <item index="5" class="java.lang.String" itemvalue="Python.gor_process_input" />
+      <item index="6" class="java.lang.String" itemvalue="Python.gor_process_input" />
+      <item index="7" class="java.lang.String" itemvalue="Python.scratch" />
+      <item index="8" class="java.lang.String" itemvalue="Python.scratch" />
     </list>
     <recent_temporary>
-      <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Python.gor_compute_predictions" />
-        <item index="1" class="java.lang.String" itemvalue="Python.gor_process_input" />
-        <item index="2" class="java.lang.String" itemvalue="Python.predict_sec_struct" />
-        <item index="3" class="java.lang.String" itemvalue="Python.gor" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.scratch" />
+        <item index="1" class="java.lang.String" itemvalue="Python.gor_compute_predictions" />
+        <item index="2" class="java.lang.String" itemvalue="Python.gor_process_input" />
+        <item index="3" class="java.lang.String" itemvalue="Python.predict_sec_struct" />
+        <item index="4" class="java.lang.String" itemvalue="Python.gor" />
       </list>
     </recent_temporary>
   </component>
@@ -395,10 +490,10 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-11" y="0" width="2750" height="1755" extended-state="0" />
+    <frame x="-13" y="-13" width="2762" height="1770" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24776119" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24665676" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299298" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -406,7 +501,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32291" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3197192" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -426,11 +521,78 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/gor_process_input.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="17" column="23" lean-forward="false" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="23" />
+          <folding>
+            <element signature="e#17#36#0" expanded="true" />
+            <marker date="1492274121391" expanded="true" signature="9843:12648" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gor_process_input.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="17" column="23" lean-forward="false" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="23" />
+          <folding>
+            <element signature="e#17#36#0" expanded="true" />
+            <marker date="1492274121391" expanded="true" signature="9843:12648" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gor_5.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/plotting_and_analysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="11" lean-forward="false" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gor_compute_predictions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9200">
+          <caret line="234" column="0" lean-forward="false" selection-start-line="234" selection-start-column="0" selection-end-line="234" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+            <marker date="1492274161238" expanded="true" signature="127:506" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="5731:7931" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="16260:16340" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/predict_sec_struct.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1120">
+          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="47" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+            <marker date="1492554089977" expanded="true" signature="226:3327" ph="..." />
+            <marker date="1492554089977" expanded="true" signature="1029:1403" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gor_process_input.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#17#36#0" expanded="true" />
-            <marker date="1492180668634" expanded="true" signature="9843:12150" ph="..." />
+            <marker date="1492274121391" expanded="true" signature="9843:12648" ph="..." />
           </folding>
         </state>
       </provider>
@@ -441,10 +603,9 @@
           <caret line="138" column="0" lean-forward="true" selection-start-line="138" selection-start-column="0" selection-end-line="139" selection-end-column="79" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
-            <marker date="1492273361888" expanded="true" signature="127:506" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16106:16186" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16106:16352" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16285:16352" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="127:506" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="5731:7931" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="16260:16340" ph="..." />
           </folding>
         </state>
       </provider>
@@ -455,6 +616,8 @@
           <caret line="23" column="72" lean-forward="false" selection-start-line="23" selection-start-column="72" selection-end-line="23" selection-end-column="72" />
           <folding>
             <element signature="e#0#51#0" expanded="true" />
+            <marker date="1492554089977" expanded="true" signature="226:3327" ph="..." />
+            <marker date="1492554089977" expanded="true" signature="1029:1403" ph="..." />
           </folding>
         </state>
       </provider>
@@ -465,7 +628,7 @@
           <caret line="36" column="117" lean-forward="true" selection-start-line="35" selection-start-column="24" selection-end-line="36" selection-end-column="117" />
           <folding>
             <element signature="e#17#36#0" expanded="true" />
-            <marker date="1492180668634" expanded="true" signature="9843:12150" ph="..." />
+            <marker date="1492274121391" expanded="true" signature="9843:12648" ph="..." />
           </folding>
         </state>
       </provider>
@@ -476,10 +639,9 @@
           <caret line="237" column="34" lean-forward="false" selection-start-line="237" selection-start-column="34" selection-end-line="237" selection-end-column="34" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
-            <marker date="1492273361888" expanded="true" signature="127:506" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16106:16186" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16106:16352" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16285:16352" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="127:506" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="5731:7931" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="16260:16340" ph="..." />
           </folding>
         </state>
       </provider>
@@ -490,6 +652,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#51#0" expanded="true" />
+            <marker date="1492554089977" expanded="true" signature="226:3327" ph="..." />
+            <marker date="1492554089977" expanded="true" signature="1029:1403" ph="..." />
           </folding>
         </state>
       </provider>
@@ -500,7 +664,7 @@
           <caret line="109" column="53" lean-forward="false" selection-start-line="109" selection-start-column="53" selection-end-line="109" selection-end-column="53" />
           <folding>
             <element signature="e#17#36#0" expanded="true" />
-            <marker date="1492180668634" expanded="true" signature="9843:12150" ph="..." />
+            <marker date="1492274121391" expanded="true" signature="9843:12648" ph="..." />
           </folding>
         </state>
       </provider>
@@ -511,10 +675,9 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
-            <marker date="1492273361888" expanded="true" signature="127:506" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16106:16186" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16106:16352" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16285:16352" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="127:506" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="5731:7931" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="16260:16340" ph="..." />
           </folding>
         </state>
       </provider>
@@ -525,7 +688,7 @@
           <caret line="195" column="31" lean-forward="false" selection-start-line="195" selection-start-column="31" selection-end-line="195" selection-end-column="31" />
           <folding>
             <element signature="e#17#36#0" expanded="true" />
-            <marker date="1492180668634" expanded="true" signature="9843:12150" ph="..." />
+            <marker date="1492274121391" expanded="true" signature="9843:12648" ph="..." />
           </folding>
         </state>
       </provider>
@@ -536,10 +699,37 @@
           <caret line="82" column="0" lean-forward="true" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
-            <marker date="1492273361888" expanded="true" signature="127:506" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16106:16186" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16106:16352" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16285:16352" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="127:506" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="5731:7931" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="16260:16340" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gor_process_input.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="560">
+          <caret line="17" column="23" lean-forward="false" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="23" />
+          <folding>
+            <element signature="e#17#36#0" expanded="true" />
+            <marker date="1492274121391" expanded="true" signature="9843:12648" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="727">
+          <caret line="35" column="7" lean-forward="false" selection-start-line="35" selection-start-column="7" selection-end-line="35" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gor_5.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="149" column="0" lean-forward="false" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -557,13 +747,12 @@
     <entry file="file://$PROJECT_DIR$/src/gor_compute_predictions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="9360">
-          <caret line="234" column="0" lean-forward="false" selection-start-line="234" selection-start-column="0" selection-end-line="234" selection-end-column="0" />
+          <caret line="238" column="0" lean-forward="false" selection-start-line="238" selection-start-column="0" selection-end-line="238" selection-end-column="0" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
-            <marker date="1492273361888" expanded="true" signature="127:506" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16106:16186" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16106:16352" ph="..." />
-            <marker date="1492273361888" expanded="true" signature="16285:16352" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="127:506" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="5731:7931" ph="..." />
+            <marker date="1492274161238" expanded="true" signature="16260:16340" ph="..." />
           </folding>
         </state>
       </provider>
@@ -571,30 +760,11 @@
     <entry file="file://$PROJECT_DIR$/src/predict_sec_struct.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1120">
-          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="47" selection-end-column="31" />
+          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="53" selection-end-column="31" />
           <folding>
             <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gor_process_input.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="17" column="23" lean-forward="false" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="23" />
-          <folding>
-            <element signature="e#17#36#0" expanded="true" />
-            <marker date="1492180668634" expanded="true" signature="9843:12150" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gor_5.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3865">
-          <caret line="144" column="0" lean-forward="false" selection-start-line="144" selection-start-column="0" selection-end-line="144" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
+            <marker date="1492554089977" expanded="true" signature="226:3327" ph="..." />
+            <marker date="1492554089977" expanded="true" signature="1029:1403" ph="..." />
           </folding>
         </state>
       </provider>
